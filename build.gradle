@@ -16,9 +16,26 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
         classpath 'com.google.gms:google-services:4.3.13'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.1"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.42"
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+
+    APP_PACKAGE_NAME = 'com.dxp.micircle'
+
+    APP_VERSION_CODE = 1
+    APP_VERSION_NAME = '1.0.0'
+
+    PROJECT_SDK_VERSION = 32
+    MIN_SDK_VERSION = 21
+
+    JAVA_VERSION = JavaVersion.VERSION_11
+
+    kotlinCoroutinesVersion = '1.6.4'
 }

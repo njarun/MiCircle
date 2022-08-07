@@ -3,21 +3,24 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id "kotlin-kapt"
+    id 'kotlin-parcelize'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'androidx.navigation.safeargs'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
 
-    compileSdk 32
+    compileSdkVersion PROJECT_SDK_VERSION
 
     defaultConfig {
 
-        applicationId "com.dxp.micircle"
-        minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        applicationId APP_PACKAGE_NAME
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion PROJECT_SDK_VERSION
+        versionCode APP_VERSION_CODE
+        versionName APP_VERSION_NAME
 
         vectorDrawables {
             useSupportLibrary true
@@ -32,24 +35,62 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    bundle {
+
+        language {
+            enableSplit = false
+        }
+    }
+
+    signingConfigs { //Dummy test key! -- nj
+
+        release {
+            storeFile file("dxp_dummy.jks")
+            storePassword 'xDummy'
+            keyAlias 'xDummy'
+            keyPassword 'xDummy'
+        }
+    }
+
     buildTypes {
+
+        debug {
+
+            signingConfig signingConfigs.release
+        }
 
         release {
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
         }
+    }
+
+    lintOptions {
+
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
     }
 
     compileOptions {
 
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JAVA_VERSION
+        targetCompatibility JAVA_VERSION
     }
 
     kotlinOptions {
 
-        jvmTarget = '1.8'
+        jvmTarget = JAVA_VERSION
+    }
+
+    packagingOptions {
+
+        resources {
+
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 
@@ -65,10 +106,23 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     //Firebase
-    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation platform ('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-auth:21.0.7'
+
+    //hilt
+    implementation 'com.google.dagger:hilt-android:2.43'
+    kapt 'com.google.dagger:hilt-android-compiler:2.43'
+
+    //logger
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    kapt 'com.github.bumptech.glide:compiler:4.13.2'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.13.2'
 }
 
 kapt {

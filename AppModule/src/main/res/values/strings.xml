@@ -2,4 +2,7 @@
 
     <string name="app_name">Mi Circle</string>
 
+    <!-- Exceptions -->
+    <string name="error_general">Error while processing</string>
+
 </resources>
