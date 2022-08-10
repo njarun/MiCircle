@@ -1,4 +1,4 @@
-package com.dxp.micircle.presentation.base.list
+package com.dxp.micircle.presentation.base.adapters.recyclerview
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

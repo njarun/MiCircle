@@ -37,7 +37,7 @@
     </style>
 
     <!--Material Circle Image style-->
-    <style name="circleImageView" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <style name="CircleImageView" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>

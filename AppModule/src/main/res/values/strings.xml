@@ -1,8 +1,12 @@
 <resources>
 
     <string name="app_name">Mi Circle</string>
+    <string name="version">Version</string>
+
+    <string name="splash_image">splash image</string>
 
     <!-- Exceptions -->
     <string name="error_general">Error while processing</string>
+    <string name="invalid_toast_msg">Invalid Toast Message</string>
 
 </resources>

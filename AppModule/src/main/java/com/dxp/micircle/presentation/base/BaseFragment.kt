@@ -9,55 +9,43 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseFragment<T> : Fragment() {
+
+    private val mActivity = activity as BaseActivity<*, *>
 
     private var viewBinding: ViewBinding? = null
     private var toast: Toast? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    abstract fun constructViewBinding(): ViewBinding
+    abstract fun onCreated(viewBinding: ViewBinding)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding = constructViewBinding()
-        viewBinding?.let { init(it) }
         return viewBinding?.root
     }
 
-    @Suppress("UNCHECKED_CAST")
-    fun getViewBinding(): T = viewBinding as T
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewBinding?.let { onCreated(it) }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         viewBinding = null
     }
 
-    abstract fun constructViewBinding(): ViewBinding
-    abstract fun init(viewBinding: ViewBinding)
-
-    override fun onPause() {
-        super.onPause()
-        hideToast()
-    }
+    fun getViewBinding(): T = viewBinding as T
 
     protected fun showToast(@StringRes stringRes: Int) {
-        showToast(getString(stringRes))
+        mActivity.showToast(stringRes)
     }
 
-    protected fun showToast(message: String) {
-
-        hideToast()
-
-        toast = Toast.makeText(requireContext(), message, Toast.LENGTH_LONG)
-        toast!!.show()
+    protected fun showToast(string: String) {
+        mActivity.showToast(string)
     }
 
     protected fun hideToast() {
-
-        if (toast != null) {
-
-            toast!!.cancel()
-            toast = null
-        }
+        mActivity.hideToast()
     }
 }
