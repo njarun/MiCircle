@@ -1,6 +1,5 @@
 package com.dxp.micircle.presentation.startup.login
 
-import android.annotation.SuppressLint
 import androidx.activity.viewModels
 import androidx.viewbinding.ViewBinding
 import com.dxp.micircle.R
@@ -9,7 +8,7 @@ import com.dxp.micircle.presentation.base.*
 import com.dxp.micircle.presentation.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint @SuppressLint("CustomSplashScreen") //Customizations are limited - let it evolve! -- nj
+@AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override val viewModel: LoginViewModel by viewModels()
