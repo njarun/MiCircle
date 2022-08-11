@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.dxp.micircle.R
 import com.dxp.micircle.utils.ExceptionParser
+import com.dxp.micircle.utils.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
@@ -75,7 +76,11 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
 
             is OnException -> {
 
-                showToast(ExceptionParser.getMessage(interaction.t as Exception))
+                var error = ExceptionParser.getMessage(interaction.t as Exception)
+                if(error == R.string.server_connection_error && Utility.isNetworkAvailable(this))
+                    error = R.string.no_internet_error
+
+                showToast(error)
             }
 
             is OnBackPressed -> {

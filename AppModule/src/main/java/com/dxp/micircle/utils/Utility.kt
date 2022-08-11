@@ -1,5 +1,7 @@
 package com.dxp.micircle.utils
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Build
 import android.view.View
 import android.view.Window
@@ -36,5 +38,11 @@ object Utility {
 
             e.printStackTrace()
         }
+    }
+
+    fun isNetworkAvailable(context: Context): Boolean {
+
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected
     }
 }

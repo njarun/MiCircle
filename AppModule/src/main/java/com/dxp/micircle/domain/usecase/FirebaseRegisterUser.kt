@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -20,12 +19,8 @@ class FirebaseRegisterUser @Inject constructor(private val firebaseAuth: Firebas
 
                     if (task.isSuccessful) {
 
-                        Timber.d("createUserWithEmail:success")
-                        val user = firebaseAuth.currentUser
-
                         val profUpdateReq = UserProfileChangeRequest.Builder().setDisplayName("$fName $lName").build()
-
-                        user?.let {
+                        firebaseAuth.currentUser?.let {
 
                             it.updateProfile(profUpdateReq)
                                 .addOnCompleteListener { updateResponse ->

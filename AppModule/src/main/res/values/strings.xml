@@ -3,13 +3,19 @@
     <string name="app_name">Friends Circle</string>
     <string name="version">Version</string>
 
-    <string name="alphabets_general" translatable="false">abcdefghijklmnopqrstuvwxyz ,.ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</string>
-    <string name="alphabets_small_and_numbers" translatable="false">abcdefghijklmnopqrstuvwxyz1234567890@_.</string>
-
     <string name="please_wait">Please wait</string>
     <string name="out_of_scope_functionalities">Feature planned for upcoming release!</string>
 
+    <!-- Contextual Descriptions -->
     <string name="splash_image">splash image</string>
+    <string name="go_back_to_previous_page">Go back to previous page</string>
+
+    <!-- Server Strings -->
+    <string name="server_not_reachable">Server not reachable</string>
+    <string name="server_connection_error">Cannot connect to server!</string>
+    <string name="error_while_processing">Error while processing</string>
+    <string name="no_data_found">No data found</string>
+    <string name="no_internet_error">You do not have internet access</string>
 
     <!-- Form Validations -->
     <string name="invalid_f_name">Enter a valid first name</string>
@@ -42,6 +48,6 @@
     <string name="hint_create_password">Create password</string>
     <string name="hint_confirm_password">Confirm password</string>
     <string name="new_account">New\nAccount !!</string>
-    <string name="go_back_to_previous_page">Go back to previous page</string>
+    <string name="user_already_exists">Email adress already registered</string>
 
 </resources>
