@@ -43,7 +43,7 @@
             android:launchMode="singleTop"/>
 
         <activity
-            android:name=".presentation.home.HomeActivity"
+            android:name=".presentation.dashboard.DashboardActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
 

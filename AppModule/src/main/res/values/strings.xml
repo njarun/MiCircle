@@ -57,4 +57,7 @@
     <string name="hint_confirm_password">Confirm password</string>
     <string name="new_account">New\nAccount !!</string>
 
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+
 </resources>

@@ -7,9 +7,9 @@
     <color name="colorAccentDark">#FFA787</color>
 
     <color name="action_bar_color">#FFA787</color>
-    <color name="acion_iv_color">@color/material_grey_850</color>
+    <color name="action_iv_color">@color/material_grey_850</color>
     <color name="window_bg_color">#F5F5F5</color>
-    <color name="date_bg_color">@color/md_grey_100</color>
+    <color name="menu_bg_color">#1d1d25</color>
 
     <color name="ic_launcher_background">#CE8508</color>
 

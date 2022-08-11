@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.viewbinding.ViewBinding
 import com.dxp.micircle.databinding.ActivitySplashBinding
 import com.dxp.micircle.presentation.base.*
-import com.dxp.micircle.presentation.home.HomeActivity
+import com.dxp.micircle.presentation.dashboard.DashboardActivity
 import com.dxp.micircle.presentation.startup.login.LoginActivity
 import com.dxp.micircle.utils.Utility.makeActivityFullScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +41,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
 
             is OnSuccess -> {
 
-                return super.handleVMInteractions(OpenNextScreen(HomeActivity::class.java))
+                return super.handleVMInteractions(OpenNextScreen(DashboardActivity::class.java))
             }
 
             is OnFailed -> {

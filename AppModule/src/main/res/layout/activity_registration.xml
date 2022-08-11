@@ -37,7 +37,7 @@
                 android:contentDescription="@string/go_back_to_previous_page"
                 android:onClick="@{() -> viewModel.onBackPressed()}"
                 android:src="@drawable/ic_action_back"
-                app:tint="@color/acion_iv_color" />
+                app:tint="@color/action_iv_color" />
 
             <TextView
                 android:id="@+id/app_name"

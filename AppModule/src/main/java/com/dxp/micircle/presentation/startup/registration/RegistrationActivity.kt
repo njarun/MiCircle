@@ -5,7 +5,7 @@ import androidx.viewbinding.ViewBinding
 import com.dxp.micircle.R
 import com.dxp.micircle.databinding.ActivityRegistrationBinding
 import com.dxp.micircle.presentation.base.*
-import com.dxp.micircle.presentation.home.HomeActivity
+import com.dxp.micircle.presentation.dashboard.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +32,7 @@ class RegistrationActivity : BaseActivity<ActivityRegistrationBinding, Registrat
 
             is OnSuccess -> {
 
-                return super.handleVMInteractions(FinishAndOpenNextScreen(HomeActivity::class.java, true))
+                return super.handleVMInteractions(FinishAndOpenNextScreen(DashboardActivity::class.java, true))
             }
 
             is OnFailed -> {

@@ -12,13 +12,18 @@ import androidx.viewbinding.ViewBinding
 @Suppress("UNCHECKED_CAST")
 abstract class BaseFragment<T> : Fragment() {
 
-    private val mActivity = activity as BaseActivity<*, *>
+    private lateinit var mActivity: BaseActivity<*, *>
 
     private var viewBinding: ViewBinding? = null
     private var toast: Toast? = null
 
     abstract fun constructViewBinding(): ViewBinding
     abstract fun onCreated(viewBinding: ViewBinding)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mActivity = activity as BaseActivity<*, *>
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding = constructViewBinding()
