@@ -77,7 +77,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
             is OnException -> {
 
                 var error = ExceptionParser.getMessage(interaction.t as Exception)
-                if(error == R.string.server_connection_error && Utility.isNetworkAvailable(this))
+                if(error == R.string.server_connection_error && !Utility.isNetworkAvailable(this))
                     error = R.string.no_internet_error
 
                 showToast(error)

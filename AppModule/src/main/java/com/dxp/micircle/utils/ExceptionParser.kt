@@ -1,8 +1,8 @@
 package com.dxp.micircle.utils
 
 import android.system.ErrnoException
-import com.bumptech.glide.load.HttpException
 import com.dxp.micircle.R
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import java.net.ConnectException
 import java.net.SocketException
@@ -12,17 +12,18 @@ import java.net.UnknownHostException
 object ExceptionParser {
 
     fun getMessage(exception: Exception): Int {
+
         return when (exception) {
 
             is FirebaseAuthUserCollisionException -> R.string.user_already_exists
-            is HttpException -> getHttpErrorMessage(exception)
-            else -> generalError()
+            else -> parseException(exception)
         }
     }
 
-    private fun getHttpErrorMessage(exception: Exception): Int {
+    private fun parseException(exception: Exception): Int {
 
-        if (exception is SocketTimeoutException ||
+        if (exception is FirebaseNetworkException ||
+            exception is SocketTimeoutException ||
             exception is UnknownHostException ||
             exception is ConnectException ||
             exception is SocketException ||

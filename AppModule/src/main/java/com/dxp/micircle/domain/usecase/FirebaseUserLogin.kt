@@ -14,8 +14,16 @@ class FirebaseUserLogin @Inject constructor(private val firebaseAuth: FirebaseAu
         return subject.doOnSubscribe {
 
             val authCredential = EmailAuthProvider.getCredential(username, password)
-            firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener {
-                subject.onSuccess(it.isSuccessful)
+            firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener { task ->
+
+                if (task.isSuccessful) {
+
+                    subject.onSuccess(true)
+                }
+                else {
+
+                    task.exception?.let { subject.onError(it) } ?: subject.onSuccess(false)
+                }
             }
         }
     }
