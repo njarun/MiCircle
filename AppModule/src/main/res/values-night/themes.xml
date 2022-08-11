@@ -9,10 +9,23 @@
         <item name="colorControlNormal">@color/material_grey_850</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
 
+        <item name="text_color_inverted">@color/white</item>
+        <item name="text_color_inverted_light">@color/semi_transparent_light</item>
+        <item name="box_bg_color">@color/md_grey_800</item>
+
+        <item name="textInputStyle">@style/TextInputLayoutAppearance</item>
+
     </style>
 
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextInputLayoutAppearance" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <item name="boxBackgroundColor">?attr/box_bg_color</item>
+        <item name="boxBackgroundMode">outline</item>
+
     </style>
 
 </resources>

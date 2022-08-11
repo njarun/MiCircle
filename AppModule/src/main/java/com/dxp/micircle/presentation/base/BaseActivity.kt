@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.dxp.micircle.R
+import com.dxp.micircle.utils.ExceptionParser
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
@@ -63,6 +64,11 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
                 }
             }
 
+            is OnException -> {
+
+                showToast(ExceptionParser.getMessage(command.t as Exception))
+            }
+
             is CloseScreen -> {
 
                 finish()
@@ -86,7 +92,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
 
     fun hideToast() {
 
-        if (toast != null) {
+        toast?.let {
 
             toast!!.cancel()
             toast = null

@@ -1,4 +1,4 @@
-package com.dxp.micircle.presentation.splash
+package com.dxp.micircle.presentation.startup.splash
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -14,8 +14,8 @@ import com.dxp.micircle.presentation.base.AppInterface
 fun transformSplashImage(iv: ImageView, logo: Int, listener: AppInterface?) {
 
     iv.setImageResource(logo)
-    iv.alpha = 0.7f
-    iv.animate().alpha(1f).setDuration(2000).setInterpolator(AccelerateInterpolator())
+    iv.alpha = 0.4f
+    iv.animate().alpha(1f).setDuration(1500).setInterpolator(AccelerateInterpolator())
         .setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)

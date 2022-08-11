@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.dxp.micircle.presentation.splash.SplashViewModel" />
+            type="com.dxp.micircle.presentation.startup.splash.SplashViewModel" />
 
     </data>
 
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".presentation.splash.SplashActivity">
+        tools:context=".presentation.startup.splash.SplashActivity">
 
         <ImageView
             android:id="@+id/splash_logo"

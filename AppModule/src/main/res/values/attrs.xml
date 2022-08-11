@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="text_color_inverted" format="reference|color" />
+    <attr name="text_color_inverted_light" format="reference|color" />
+    <attr name="box_bg_color" format="reference|color" />
+
+</resources>

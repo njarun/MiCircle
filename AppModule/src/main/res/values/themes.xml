@@ -18,6 +18,12 @@
 
         <!-- Customize your theme here. -->
 
+        <item name="text_color_inverted">@color/black</item>
+        <item name="text_color_inverted_light">@color/md_grey_500</item>
+        <item name="box_bg_color">@color/semi_transparent_light</item>
+
+        <item name="textInputStyle">@style/TextInputLayoutAppearance</item>
+
     </style>
 
     <style name="Theme.App.Splash" parent="Theme.App">
@@ -40,6 +46,13 @@
     <style name="CircleImageView" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="TextInputLayoutAppearance" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <item name="boxBackgroundColor">?attr/box_bg_color</item>
+        <item name="boxBackgroundMode">outline</item>
+
     </style>
 
 </resources>

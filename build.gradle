@@ -30,7 +30,7 @@ ext {
     APP_PACKAGE_NAME = 'com.dxp.micircle'
 
     APP_VERSION_CODE = 1
-    APP_VERSION_NAME = '1.0.0'
+    APP_VERSION_NAME = '1.0.0.1'
 
     PROJECT_SDK_VERSION = 32
     MIN_SDK_VERSION = 21
