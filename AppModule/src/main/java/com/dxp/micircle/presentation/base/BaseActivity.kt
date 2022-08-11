@@ -46,27 +46,33 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
 
     open fun getViewBinding(): T = viewBinding as T
 
-    open fun handleVMInteractions(command: Interactor): Boolean {
+    open fun handleVMInteractions(interaction: Interactor): Boolean {
 
-        when (command) {
+        when (interaction) {
 
             is OpenNextScreen -> {
 
-                this.startActivity(Intent(this, command.clazz))
+                this.startActivity(Intent(this, interaction.clazz))
+            }
+
+            is OpenNextScreenAndFinish -> {
+
+                this.startActivity(Intent(this, interaction.clazz))
+                finish()
             }
 
             is ShowToast -> {
 
-                when (command.message) {
-                    is Int -> showToast(command.message)
-                    is String -> showToast(command.message)
+                when (interaction.message) {
+                    is Int -> showToast(interaction.message)
+                    is String -> showToast(interaction.message)
                     else -> showToast(R.string.invalid_toast_msg)
                 }
             }
 
             is OnException -> {
 
-                showToast(ExceptionParser.getMessage(command.t as Exception))
+                showToast(ExceptionParser.getMessage(interaction.t as Exception))
             }
 
             is CloseScreen -> {

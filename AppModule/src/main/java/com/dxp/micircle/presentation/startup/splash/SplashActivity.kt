@@ -35,9 +35,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
         }
     }
 
-    override fun handleVMInteractions(command: Interactor): Boolean {
+    override fun handleVMInteractions(interaction: Interactor): Boolean {
 
-        when(command) {
+        when(interaction) {
 
             is OnSuccess -> {
 
@@ -50,6 +50,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
             }
         }
 
-        return super.handleVMInteractions(command)
+        return super.handleVMInteractions(interaction)
     }
 }

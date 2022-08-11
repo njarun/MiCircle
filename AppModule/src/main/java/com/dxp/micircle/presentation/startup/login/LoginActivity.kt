@@ -27,13 +27,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
         }
     }
 
-    override fun handleVMInteractions(command: Interactor): Boolean {
+    override fun handleVMInteractions(interaction: Interactor): Boolean {
 
-        when(command) {
+        when(interaction) {
 
             is OnSuccess -> {
 
-                return super.handleVMInteractions(OpenNextScreen(MainActivity::class.java))
+                return super.handleVMInteractions(OpenNextScreenAndFinish(MainActivity::class.java))
             }
 
             is OnFailed -> {
@@ -42,6 +42,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
             }
         }
 
-        return super.handleVMInteractions(command)
+        return super.handleVMInteractions(interaction)
     }
 }

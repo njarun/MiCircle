@@ -148,7 +148,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="end"
                             android:text="@string/forgot_password"
-                            app:showToast="@{@string/out_of_scope_functionalities}"
+                            android:onClick="@{() -> viewModel.postMessage(@string/out_of_scope_functionalities)}"
                             android:textColor="@color/md_deep_orange_500" />
 
                         <Button
@@ -229,7 +229,7 @@
                             android:layout_weight="4.75"
                             android:background="@drawable/rounded_red_corner"
                             android:gravity="center"
-                            app:showToast="@{@string/out_of_scope_functionalities}"
+                            android:onClick="@{() -> viewModel.postMessage(@string/out_of_scope_functionalities)}"
                             android:orientation="horizontal"
                             android:padding="10dp">
 
@@ -260,7 +260,7 @@
                             android:layout_weight="4.75"
                             android:background="@drawable/rounded_fb_blue_corner"
                             android:gravity="center"
-                            app:showToast="@{@string/out_of_scope_functionalities}"
+                            android:onClick="@{() -> viewModel.postMessage(@string/out_of_scope_functionalities)}"
                             android:orientation="horizontal"
                             android:padding="10dp">
 

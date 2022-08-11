@@ -94,4 +94,8 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
 
         return false
     }
+
+    fun postMessage(message: String) {
+        emitAction(ShowToast(message))
+    }
 }
