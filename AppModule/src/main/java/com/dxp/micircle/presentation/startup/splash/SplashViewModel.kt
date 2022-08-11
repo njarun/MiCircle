@@ -35,9 +35,9 @@ class SplashViewModel @Inject constructor(private val firebaseValidateUser: Fire
             firebaseValidateUser()
                 .subscribeOn(schedulers.ioScheduler)
                 .observeOn(schedulers.uiScheduler)
-                .subscribe({ authenticated ->
+                .subscribe({ result ->
 
-                    this.isAuthenticated = authenticated
+                    this.isAuthenticated = result
                     userValidationIsReady = true
 
                     openNextPageWhenReady()

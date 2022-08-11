@@ -8,21 +8,30 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseFragment<T> : Fragment() {
+abstract class BaseFragment<T, VM : BaseViewModel> : Fragment() {
 
     private lateinit var mActivity: BaseActivity<*, *>
+
+    private lateinit var vmOperationsDisposible: Disposable
 
     private var viewBinding: ViewBinding? = null
     private var toast: Toast? = null
 
+    protected abstract val viewModel: VM
     abstract fun constructViewBinding(): ViewBinding
     abstract fun onCreated(viewBinding: ViewBinding)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActivity = activity as BaseActivity<*, *>
+        vmOperationsDisposible = viewModel
+            .interactions
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { handleVMInteractions(it) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,10 +46,15 @@ abstract class BaseFragment<T> : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        vmOperationsDisposible.dispose()
         viewBinding = null
     }
 
     fun getViewBinding(): T = viewBinding as T
+
+    open fun handleVMInteractions(interaction: Interactor): Boolean {
+        return handleVMInteractions(mActivity, interaction)
+    }
 
     protected fun showToast(@StringRes stringRes: Int) {
         mActivity.showToast(stringRes)

@@ -1,14 +1,10 @@
 package com.dxp.micircle.presentation.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.dxp.micircle.R
-import com.dxp.micircle.utils.ExceptionParser
-import com.dxp.micircle.utils.Utility
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
@@ -48,53 +44,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
     open fun getViewBinding(): T = viewBinding as T
 
     open fun handleVMInteractions(interaction: Interactor): Boolean {
-
-        when (interaction) {
-
-            is OpenNextScreen -> {
-
-                this.startActivity(Intent(this, interaction.clazz))
-            }
-
-            is FinishAndOpenNextScreen -> {
-
-                if(interaction.finishAll)
-                    finishAffinity()
-                else finish()
-
-                this.startActivity(Intent(this, interaction.clazz))
-            }
-
-            is ShowToast -> {
-
-                when (interaction.message) {
-                    is Int -> showToast(interaction.message)
-                    is String -> showToast(interaction.message)
-                    else -> showToast(R.string.invalid_toast_msg)
-                }
-            }
-
-            is OnException -> {
-
-                var error = ExceptionParser.getMessage(interaction.t as Exception)
-                if(error == R.string.server_connection_error && !Utility.isNetworkAvailable(this))
-                    error = R.string.no_internet_error
-
-                showToast(error)
-            }
-
-            is OnBackPressed -> {
-
-                onBackPressed()
-            }
-
-            is CloseScreen -> {
-
-                finish()
-            }
-        }
-
-        return true
+        return handleVMInteractions(this, interaction)
     }
 
     fun showToast(@StringRes stringRes: Int) {

@@ -63,10 +63,10 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
                     userRegistration.invoke(fName, lName, username, password)
                         .subscribeOn(schedulers.ioScheduler)
                         .observeOn(schedulers.uiScheduler)
-                        .subscribe({ authenticated ->
+                        .subscribe({ result ->
 
                             _viewRefreshState.postValue(false)
-                            emitAction(if (authenticated) OnSuccess else OnFailed)
+                            emitAction(if (result) OnSuccess else OnFailed)
                         }, {
 
                             _viewRefreshState.postValue(false)

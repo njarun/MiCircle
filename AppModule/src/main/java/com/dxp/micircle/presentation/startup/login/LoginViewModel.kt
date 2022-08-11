@@ -44,8 +44,6 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
             }
             else {
 
-                Timber.d("Valid user pass, continue with login!")
-
                 _viewRefreshState.postValue(true)
 
                 subscription {
@@ -53,10 +51,10 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
                     userLogin.invoke(username, password)
                         .subscribeOn(schedulers.ioScheduler)
                         .observeOn(schedulers.uiScheduler)
-                        .subscribe({ authenticated ->
+                        .subscribe({ result ->
 
                             _viewRefreshState.postValue(false)
-                            emitAction(if (authenticated) OnSuccess else OnFailed)
+                            emitAction(if (result) OnSuccess else OnFailed)
                         }, {
 
                             _viewRefreshState.postValue(false)
