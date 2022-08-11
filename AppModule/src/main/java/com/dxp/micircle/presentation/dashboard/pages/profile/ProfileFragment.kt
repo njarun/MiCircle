@@ -22,8 +22,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             lifecycleOwner = this@ProfileFragment
             viewModel = this@ProfileFragment.viewModel
         }
-
-        showToast(R.string.profile)
     }
 
     override fun handleVMInteractions(interaction: Interactor): Boolean {
