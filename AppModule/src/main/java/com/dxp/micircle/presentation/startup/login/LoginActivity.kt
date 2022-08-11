@@ -6,6 +6,7 @@ import com.dxp.micircle.R
 import com.dxp.micircle.databinding.ActivityLoginBinding
 import com.dxp.micircle.presentation.base.*
 import com.dxp.micircle.presentation.home.MainActivity
+import com.dxp.micircle.presentation.startup.registration.RegistrationActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,12 +33,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
             is OnSuccess -> {
 
-                return super.handleVMInteractions(OpenNextScreenAndFinish(MainActivity::class.java))
+                return super.handleVMInteractions(FinishAndOpenNextScreen(MainActivity::class.java, false))
             }
 
             is OnFailed -> {
 
                 return super.handleVMInteractions(ShowToast(getString(R.string.login_failed)))
+            }
+
+            is OnNewAccount -> {
+
+                return super.handleVMInteractions(OpenNextScreen(RegistrationActivity::class.java))
             }
         }
 

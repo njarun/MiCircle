@@ -1,9 +1,9 @@
-package com.dxp.micircle.presentation.startup.login
+package com.dxp.micircle.presentation.startup.registration
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dxp.micircle.R
-import com.dxp.micircle.domain.usecase.FirebaseUserLogin
+import com.dxp.micircle.domain.usecase.FirebaseRegisterUser
 import com.dxp.micircle.helpers.AppSchedulers
 import com.dxp.micircle.presentation.base.*
 import com.dxp.micircle.utils.Validator
@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogin): BaseViewModel() {
+class RegistrationViewModel @Inject constructor(private val userRegistration: FirebaseRegisterUser): BaseViewModel() {
 
     @Inject
     lateinit var schedulers: AppSchedulers
@@ -42,11 +42,11 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
             _passwordError.value = ""
     }
 
-    fun tryLoginWithUserPass(username: String, password: String): Boolean {
+    fun initiateRegistration(fName: String, lName: String, username: String, password: String): Boolean {
 
         try {
 
-            Timber.d("Try login with $username and $password")
+            Timber.d("Try registration with $fName, $lName, $username and $password")
 
             if(viewRefreshState.value == true) {
 
@@ -68,7 +68,7 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
 
                 subscription {
 
-                    userLogin.invoke(username, password)
+                    userRegistration.invoke(fName, lName, username, password)
                         .subscribeOn(schedulers.ioScheduler)
                         .observeOn(schedulers.uiScheduler)
                         .subscribe({ authenticated ->
@@ -93,10 +93,6 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
         }
 
         return false
-    }
-
-    fun createNewAccount() {
-        emitAction(OnNewAccount)
     }
 
     fun postMessage(message: String) {

@@ -97,9 +97,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/email"
                             app:errorEnabled="true"
-                            app:setError="@{viewModel.userNameError}"
                             app:hintEnabled="true"
                             app:hintTextColor="@color/md_grey_500"
+                            app:setError="@{viewModel.userNameError}"
                             app:startIconDrawable="@drawable/ic_action_mail"
                             app:startIconTint="@color/md_blue_400">
 
@@ -107,9 +107,9 @@
                                 android:id="@+id/username_et"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:afterTextChanged="@{(text) -> viewModel.onUsernameChange()}"
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
-                                android:afterTextChanged="@{(text) -> viewModel.onUsernameChange()}"
                                 android:maxLines="1"
                                 android:selectAllOnFocus="true" />
 
@@ -121,10 +121,10 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/password"
                             app:errorEnabled="true"
-                            app:setError="@{viewModel.passwordError}"
                             app:hintEnabled="true"
                             app:hintTextColor="@color/md_grey_500"
                             app:passwordToggleEnabled="true"
+                            app:setError="@{viewModel.passwordError}"
                             app:startIconDrawable="@drawable/ic_action_lock"
                             app:startIconTint="@color/md_blue_400">
 
@@ -132,11 +132,11 @@
                                 android:id="@+id/password_et"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:afterTextChanged="@{(text) -> viewModel.onPasswordChange()}"
                                 android:imeOptions="actionDone"
                                 android:inputType="textPassword"
-                                android:onEditorAction="@{(view,actionId,event) -> viewModel.tryLoginWithUserPass(usernameEt.getText().toString(), passwordEt.getText().toString())}"
-                                android:afterTextChanged="@{(text) -> viewModel.onPasswordChange()}"
                                 android:maxLines="1"
+                                android:onEditorAction="@{(view,actionId,event) -> viewModel.tryLoginWithUserPass(usernameEt.getText().toString(), passwordEt.getText().toString())}"
                                 android:selectAllOnFocus="true" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -147,8 +147,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="end"
-                            android:text="@string/forgot_password"
                             android:onClick="@{() -> viewModel.postMessage(@string/out_of_scope_functionalities)}"
+                            android:text="@string/forgot_password"
                             android:textColor="@color/md_deep_orange_500" />
 
                         <Button
@@ -159,8 +159,8 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="24dp"
                             android:minHeight="60dp"
-                            android:text="@string/login"
                             android:onClick="@{() -> viewModel.tryLoginWithUserPass(usernameEt.getText().toString(), passwordEt.getText().toString())}"
+                            android:text="@string/login"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             app:backgroundTint="@color/md_light_green_500"
@@ -287,6 +287,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="30dp"
+                        android:onClick="@{() -> viewModel.createNewAccount()}"
                         android:orientation="horizontal">
 
                         <TextView
@@ -320,7 +321,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.viewRefreshState}"/>
+            android:visibility="@{viewModel.viewRefreshState}" />
 
     </RelativeLayout>
 

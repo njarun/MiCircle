@@ -7,7 +7,7 @@
     <color name="colorAccentDark">#FFA787</color>
 
     <color name="action_bar_color">#FFA787</color>
-    <color name="detail_arrow_color">@color/material_grey_850</color>
+    <color name="acion_iv_color">@color/material_grey_850</color>
     <color name="window_bg_color">#F5F5F5</color>
     <color name="date_bg_color">@color/md_grey_100</color>
 

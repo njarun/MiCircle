@@ -22,6 +22,11 @@ open class BaseViewModel : ViewModel() {
         subscriptions.add(block())
     }
 
+    fun onBackPressed() {
+
+        emitAction(OnBackPressed)
+    }
+
     override fun onCleared() {
         super.onCleared()
         subscriptions.clear()

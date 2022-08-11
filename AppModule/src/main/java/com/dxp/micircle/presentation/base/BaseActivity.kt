@@ -55,10 +55,13 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
                 this.startActivity(Intent(this, interaction.clazz))
             }
 
-            is OpenNextScreenAndFinish -> {
+            is FinishAndOpenNextScreen -> {
+
+                if(interaction.finishAll)
+                    finishAffinity()
+                else finish()
 
                 this.startActivity(Intent(this, interaction.clazz))
-                finish()
             }
 
             is ShowToast -> {
@@ -73,6 +76,11 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity() {
             is OnException -> {
 
                 showToast(ExceptionParser.getMessage(interaction.t as Exception))
+            }
+
+            is OnBackPressed -> {
+
+                onBackPressed()
             }
 
             is CloseScreen -> {
