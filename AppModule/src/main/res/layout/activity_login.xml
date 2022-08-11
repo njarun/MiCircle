@@ -99,15 +99,15 @@
                             app:errorEnabled="true"
                             app:hintEnabled="true"
                             app:hintTextColor="@color/md_grey_500"
-                            app:setError="@{viewModel.userNameError}"
+                            app:setError="@{viewModel.formsErrorLd[`username`] != null ? context.getString(viewModel.formsErrorLd[`username`]) : ``}"
                             app:startIconDrawable="@drawable/ic_action_mail"
                             app:startIconTint="@color/md_blue_400">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/username_et"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:afterTextChanged="@{(text) -> viewModel.onUsernameChange()}"
+                                android:layout_height="56dp"
+                                android:afterTextChanged="@{(text) -> viewModel.setFieldError(`username`, -1)}"
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
                                 android:maxLines="1"
@@ -124,7 +124,7 @@
                             app:hintEnabled="true"
                             app:hintTextColor="@color/md_grey_500"
                             app:passwordToggleEnabled="true"
-                            app:setError="@{viewModel.passwordError}"
+                            app:setError="@{viewModel.formsErrorLd[`password`] != null ? context.getString(viewModel.formsErrorLd[`password`]) : ``}"
                             app:startIconDrawable="@drawable/ic_action_lock"
                             app:startIconTint="@color/md_blue_400">
 
@@ -132,7 +132,7 @@
                                 android:id="@+id/password_et"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:afterTextChanged="@{(text) -> viewModel.onPasswordChange()}"
+                                android:afterTextChanged="@{(text) -> viewModel.setFieldError(`password`, -1)}"
                                 android:imeOptions="actionDone"
                                 android:inputType="textPassword"
                                 android:maxLines="1"

@@ -5,7 +5,7 @@ import androidx.viewbinding.ViewBinding
 import com.dxp.micircle.R
 import com.dxp.micircle.databinding.ActivityLoginBinding
 import com.dxp.micircle.presentation.base.*
-import com.dxp.micircle.presentation.home.MainActivity
+import com.dxp.micircle.presentation.home.HomeActivity
 import com.dxp.micircle.presentation.startup.registration.RegistrationActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,7 +33,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
             is OnSuccess -> {
 
-                return super.handleVMInteractions(FinishAndOpenNextScreen(MainActivity::class.java, false))
+                return super.handleVMInteractions(FinishAndOpenNextScreen(HomeActivity::class.java, false))
             }
 
             is OnFailed -> {

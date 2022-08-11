@@ -3,6 +3,7 @@ package com.dxp.micircle.utils
 import android.system.ErrnoException
 import com.dxp.micircle.R
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import java.net.ConnectException
 import java.net.SocketException
@@ -15,6 +16,7 @@ object ExceptionParser {
 
         return when (exception) {
 
+            is FirebaseAuthInvalidCredentialsException -> R.string.email_password_error
             is FirebaseAuthUserCollisionException -> R.string.user_already_exists
             else -> parseException(exception)
         }

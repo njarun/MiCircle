@@ -17,12 +17,6 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
     @Inject
     lateinit var schedulers: AppSchedulers
 
-    private val _userNameError = MutableLiveData("")
-    val userNameError: LiveData<String> = _userNameError
-
-    private val _passwordError = MutableLiveData("")
-    val passwordError: LiveData<String> = _passwordError
-
     private val _viewRefreshState = MutableLiveData(false)
     val viewRefreshState: LiveData<Boolean> = _viewRefreshState
 
@@ -30,19 +24,7 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
 
     }
 
-    fun onUsernameChange() {
-
-        if(userNameError.value?.isNotEmpty() == true)
-            _userNameError.value = ""
-    }
-
-    fun onPasswordChange() {
-
-        if(passwordError.value?.isNotEmpty() == true)
-            _passwordError.value = ""
-    }
-
-    fun initiateRegistration(fName: String, lName: String, username: String, password: String): Boolean {
+    fun initiateRegistration(fName: String, lName: String, username: String, password: String, confPassword: String): Boolean {
 
         try {
 
@@ -52,17 +34,27 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
 
                 emitAction(ShowToast(R.string.please_wait))
             }
+            else if(!Validator.isTextFieldValid(fName)) {
+
+                setFieldError("fName", R.string.invalid_f_name)
+            }
+            else if(!Validator.isTextFieldValid(lName)) {
+
+                setFieldError("lName", R.string.invalid_l_name)
+            }
             else if(!Validator.isUserNameValid(username)) {
 
-                _userNameError.value = "Enter a valid user name"
+                setFieldError("username", R.string.invalid_email)
             }
             else if(!Validator.isValidPassword(password)) {
 
-                _passwordError.value = "Enter a valid user password"
+                setFieldError("password", R.string.invalid_password)
+            }
+            else if(!Validator.isPasswordAndConfirmPasswordSame(password, confPassword)) {
+
+                setFieldError("confPassword", R.string.invalid_conf_password)
             }
             else {
-
-                Timber.d("Valid user pass, continue with login!")
 
                 _viewRefreshState.postValue(true)
 

@@ -17,29 +17,11 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
     @Inject
     lateinit var schedulers: AppSchedulers
 
-    private val _userNameError = MutableLiveData("")
-    val userNameError: LiveData<String> = _userNameError
-
-    private val _passwordError = MutableLiveData("")
-    val passwordError: LiveData<String> = _passwordError
-
     private val _viewRefreshState = MutableLiveData(false)
     val viewRefreshState: LiveData<Boolean> = _viewRefreshState
 
     fun onInit() {
 
-    }
-
-    fun onUsernameChange() {
-
-        if(userNameError.value?.isNotEmpty() == true)
-            _userNameError.value = ""
-    }
-
-    fun onPasswordChange() {
-
-        if(passwordError.value?.isNotEmpty() == true)
-            _passwordError.value = ""
     }
 
     fun tryLoginWithUserPass(username: String, password: String): Boolean {
@@ -54,11 +36,11 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
             }
             else if(!Validator.isUserNameValid(username)) {
 
-                _userNameError.value = "Enter a valid user name"
+                setFieldError("username", R.string.invalid_email)
             }
             else if(!Validator.isValidPassword(password)) {
 
-                _passwordError.value = "Enter a valid user password"
+                setFieldError("password", R.string.invalid_password_general)
             }
             else {
 

@@ -18,6 +18,10 @@
     <string name="no_internet_error">You do not have internet access</string>
 
     <!-- Form Validations -->
+    <string name="empty">""</string>
+    <string name="invalid_email">Enter valid email</string>
+    <string name="invalid_password_general">Enter valid password</string>
+    <string name="invalid_data">Please enter valid data</string>
     <string name="invalid_f_name">Enter a valid first name</string>
     <string name="invalid_l_name">Enter a valid last name</string>
     <string name="invalid_user_name">Email doesn\'t matching criteria</string>
@@ -30,6 +34,10 @@
     <string name="general_user_error">Something went wrong, please try again later!</string>
     <string name="login_failed">Login failed for credentials, try again!</string>
     <string name="registration_failed">Registration failed, try again!</string>
+
+    <!-- Firebase Exceptions -->
+    <string name="email_password_error">Invalid username or password</string>
+    <string name="user_already_exists">Email address is already registered</string>
 
     <string name="username">Username</string>
     <string name="email">Email</string>
@@ -48,6 +56,5 @@
     <string name="hint_create_password">Create password</string>
     <string name="hint_confirm_password">Confirm password</string>
     <string name="new_account">New\nAccount !!</string>
-    <string name="user_already_exists">Email adress already registered</string>
 
 </resources>
