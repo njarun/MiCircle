@@ -8,11 +8,10 @@
 
     <color name="action_bar_color">#FFA787</color>
     <color name="detail_arrow_color">@color/material_grey_850</color>
-    <color name="window_bg_color">@color/md_grey_100</color>
+    <color name="window_bg_color">#F5F5F5</color>
     <color name="date_bg_color">@color/md_grey_100</color>
 
     <color name="ic_launcher_background">#CE8508</color>
-    <color name="material_grey_850">#ff303030</color>
 
     <color name="white">@android:color/white</color>
     <color name="black">@android:color/black</color>

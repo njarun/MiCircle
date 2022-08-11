@@ -5,7 +5,7 @@
 
     <color name="detail_arrow_color">@color/md_grey_200</color>
 
-    <color name="window_bg_color">@color/material_grey_850</color>
+    <color name="window_bg_color">#121212</color>
 
     <color name="date_bg_color">#121212</color>
 

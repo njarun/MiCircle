@@ -4,10 +4,12 @@
 
         <!-- Primary brand color. -->
         <item name="colorPrimaryVariant">@color/material_grey_850</item>
+        <item name="android:windowBackground">@color/window_bg_color</item>
 
         <!-- Status bar color. -->
+        <item name="colorPrimaryDark">@color/material_grey_850</item>
         <item name="colorControlNormal">@color/material_grey_850</item>
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/window_bg_color</item>
 
         <item name="text_color_inverted">@color/white</item>
         <item name="text_color_inverted_light">@color/semi_transparent_light</item>
