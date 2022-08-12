@@ -28,7 +28,7 @@ class SplashViewModel @Inject constructor(private val firebaseValidateUser: Fire
         }
     }
 
-    fun onInit() {
+    fun postInit() {
 
         subscription {
 

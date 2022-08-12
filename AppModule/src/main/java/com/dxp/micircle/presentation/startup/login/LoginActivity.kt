@@ -18,8 +18,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override fun onCreated(viewBinding: ViewBinding) {
 
-        viewModel.onInit()
-
         getViewBinding().apply {
 
             lifecycleOwner = this@LoginActivity

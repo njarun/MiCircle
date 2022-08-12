@@ -20,10 +20,6 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
     private val _viewRefreshState = MutableLiveData(false)
     val viewRefreshState: LiveData<Boolean> = _viewRefreshState
 
-    fun onInit() {
-
-    }
-
     fun tryLoginWithUserPass(username: String, password: String): Boolean {
 
         try {
@@ -77,9 +73,5 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
 
     fun createNewAccount() {
         emitAction(OnNewAccount)
-    }
-
-    fun postMessage(message: String) {
-        emitAction(ShowToast(message))
     }
 }

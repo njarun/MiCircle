@@ -47,6 +47,11 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
 
+        <activity
+            android:name=".presentation.new_post.NewPostActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
     </application>
 
 </manifest>

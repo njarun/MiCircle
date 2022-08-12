@@ -7,20 +7,18 @@ import com.dxp.micircle.utils.Utility
 
 interface Interactor
 
-class ShowToast(val message: Any): Interactor
-
 object CloseScreen: Interactor
 object OnBackPressed: Interactor
-class OnException(val t: Throwable): Interactor
-
-class OpenNextScreen(val clazz: Class<*>): Interactor
-class FinishAndOpenNextScreen(val clazz: Class<*>, val finishAll: Boolean): Interactor
+object OnNewAccount : Interactor
+object OnLogout : Interactor
+object OnNewPost : Interactor
 
 object OnSuccess : Interactor
 object OnFailed : Interactor
-
-object OnNewAccount : Interactor
-object OnLogout : Interactor
+class ShowToast(val message: Any): Interactor
+class OpenNextScreen(val clazz: Class<*>): Interactor
+class FinishAndOpenNextScreen(val clazz: Class<*>, val finishAll: Boolean): Interactor
+class OnException(val t: Throwable): Interactor
 
 fun handleVMInteractions(activity: BaseActivity<*, *>, interaction: Interactor): Boolean {
 

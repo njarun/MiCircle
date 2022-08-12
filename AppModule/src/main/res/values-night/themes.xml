@@ -3,12 +3,21 @@
     <style name="Theme.App" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <!-- Primary brand color. -->
-        <item name="colorPrimaryVariant">@color/material_grey_850</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/material_grey_850</item>
+        <item name="colorControlNormal">@color/material_grey_850</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondaryVariant">@color/colorAccentDark</item>
+        <item name="colorOnSecondary">@color/colorPrimary</item>
+
+        <!-- Window color. -->
         <item name="android:windowBackground">@color/window_bg_color</item>
 
         <!-- Status bar color. -->
-        <item name="colorPrimaryDark">@color/material_grey_850</item>
-        <item name="colorControlNormal">@color/material_grey_850</item>
         <item name="android:statusBarColor">@color/window_bg_color</item>
 
         <item name="text_color_inverted">@color/white</item>

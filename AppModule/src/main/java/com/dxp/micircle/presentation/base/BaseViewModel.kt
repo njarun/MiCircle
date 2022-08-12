@@ -48,6 +48,10 @@ open class BaseViewModel : ViewModel() {
         emitAction(OnBackPressed)
     }
 
+    fun postMessage(message: String) {
+        emitAction(ShowToast(message))
+    }
+
     override fun onCleared() {
         super.onCleared()
         subscriptions.clear()

@@ -6,7 +6,6 @@ import com.dxp.micircle.databinding.ActivityDashboardBinding
 import com.dxp.micircle.presentation.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class DashboardActivity : BaseActivity<ActivityDashboardBinding, DashboardViewModel>() {
 
@@ -16,13 +15,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding, DashboardViewMo
 
     override fun onCreated(viewBinding: ViewBinding) {
 
-        viewModel.onInit()
-
         getViewBinding().apply {
 
             lifecycleOwner = this@DashboardActivity
-            viewModel = this@DashboardActivity.viewModel
             fragmentManager = supportFragmentManager
+            viewModel = this@DashboardActivity.viewModel
         }
     }
 }

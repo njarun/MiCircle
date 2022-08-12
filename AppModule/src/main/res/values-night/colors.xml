@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="action_bar_color">@color/material_grey_850</color>
+    <color name="colorAccent">@color/md_cyan_500</color>
+    <color name="colorAccentDark">@color/md_cyan_700</color>
 
-    <color name="action_iv_color">@color/md_grey_200</color>
+    <color name="action_bar_item_color">@color/white</color>
 
     <color name="window_bg_color">#121212</color>
 

@@ -26,7 +26,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
 
     override fun onCreated(viewBinding: ViewBinding) {
 
-        viewModel.onInit()
+        viewModel.postInit()
 
         getViewBinding().apply {
 

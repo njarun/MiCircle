@@ -17,8 +17,6 @@ class RegistrationActivity : BaseActivity<ActivityRegistrationBinding, Registrat
 
     override fun onCreated(viewBinding: ViewBinding) {
 
-        viewModel.onInit()
-
         getViewBinding().apply {
 
             lifecycleOwner = this@RegistrationActivity

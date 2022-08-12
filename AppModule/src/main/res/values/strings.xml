@@ -9,6 +9,8 @@
     <!-- Contextual Descriptions -->
     <string name="splash_image">splash image</string>
     <string name="go_back_to_previous_page">Go back to previous page</string>
+    <string name="add_a_new_post_to_timeline">Add a new post to timeline</string>
+    <string name="action_icon_left">Action icon left</string>
 
     <!-- Server Strings -->
     <string name="server_not_reachable">Server not reachable</string>
@@ -61,5 +63,6 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="logout">Log out</string>
+    <string name="new_post">New Post</string>
 
 </resources>

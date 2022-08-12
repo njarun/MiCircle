@@ -2,6 +2,26 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+        <import type="android.view.Gravity" />
+        <import type="android.graphics.Typeface" />
+
+        <variable
+            name="treatAsMainPage"
+            type="Boolean" />
+
+        <variable
+            name="pageTitle"
+            type="String" />
+
+        <variable
+            name="baseViewModel"
+            type="com.dxp.micircle.presentation.base.BaseViewModel" />
+
+    </data>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/action_bar"
         android:layout_width="match_parent"
@@ -9,7 +29,6 @@
         android:fitsSystemWindows="true"
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
-        android:background="@color/action_bar_color"
         app:elevation="8dp"
         android:animateLayoutChanges="true"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -18,7 +37,6 @@
             android:id="@+id/action_bar_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
             android:contentInsetEnd="0dp"
             android:contentInsetLeft="0dp"
             android:contentInsetRight="0dp"
@@ -37,17 +55,22 @@
                 android:layout_width="?android:attr/actionBarSize"
                 android:layout_height="match_parent"
                 android:padding="15dp"
+                app:tint="@color/action_bar_item_color"
+                android:onClick="@{() -> baseViewModel.postMessage(@string/out_of_scope_functionalities)}"
                 android:layout_gravity="center_vertical|start"
-                android:src="@drawable/ic_action_menu" />
+                android:src="@drawable/ic_action_search"
+                android:contentDescription="@string/action_icon_left" />
 
             <TextView
                 android:id="@+id/page_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:text="@string/app_name" />
+                android:layout_marginEnd="?android:attr/actionBarSize"
+                android:textSize="@{treatAsMainPage ? @dimen/heading_main : @dimen/heading_normal}"
+                android:typeface="@{Typeface.defaultFromStyle(treatAsMainPage ? Typeface.BOLD_ITALIC : Typeface.BOLD)}"
+                android:gravity="@{treatAsMainPage ? Gravity.CENTER : Gravity.START}"
+                android:textColor="@color/action_bar_item_color"
+                android:text="@{pageTitle}" />
 
         </androidx.appcompat.widget.Toolbar>
 

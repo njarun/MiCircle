@@ -20,10 +20,6 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
     private val _viewRefreshState = MutableLiveData(false)
     val viewRefreshState: LiveData<Boolean> = _viewRefreshState
 
-    fun onInit() {
-
-    }
-
     fun initiateRegistration(fName: String, lName: String, username: String, password: String, confPassword: String): Boolean {
 
         try {
@@ -85,9 +81,5 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
         }
 
         return false
-    }
-
-    fun postMessage(message: String) {
-        emitAction(ShowToast(message))
     }
 }
