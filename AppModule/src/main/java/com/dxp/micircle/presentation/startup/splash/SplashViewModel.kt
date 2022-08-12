@@ -1,8 +1,8 @@
 package com.dxp.micircle.presentation.startup.splash
 
 import androidx.lifecycle.viewModelScope
+import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.usecase.FirebaseValidateUser
-import com.dxp.micircle.helpers.AppSchedulers
 import com.dxp.micircle.presentation.base.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

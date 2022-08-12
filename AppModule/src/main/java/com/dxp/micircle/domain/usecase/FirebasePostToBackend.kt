@@ -1,8 +1,11 @@
 package com.dxp.micircle.domain.usecase
 
 import android.net.Uri
+import androidx.work.*
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
-import com.dxp.micircle.domain.dto.model.PostModel
+import com.dxp.micircle.domain.router.model.PostModel
+import com.dxp.micircle.domain.router.repository.PostsRepository
+import com.dxp.micircle.domain.worker.PostUploadWorker
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
@@ -12,7 +15,31 @@ import java.io.File
 import javax.inject.Inject
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class FirebasePostToBackend @Inject constructor(private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
+class FirebasePostToBackend @Inject constructor(private val workManager: WorkManager,
+    private val postsRepository: PostsRepository, private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
+
+    fun executeWorker(postModel: PostModel) = flow {
+
+        postsRepository.savePost(postModel)
+
+        val data = Data.Builder()
+            .putString("POST_ID", postModel.postId)
+            .build()
+
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val postUploadWorker = OneTimeWorkRequestBuilder<PostUploadWorker>()
+            .setInputData(data)
+            .setConstraints(constraints)
+            .build()
+
+        workManager.enqueue(postUploadWorker)
+
+        emit(false)
+    }
+    .flowOn(coroutineDispatcherProvider.IO())
 
     fun execute(postModel: PostModel, postRef: DatabaseReference, postMediaRef: StorageReference) = flow {
 

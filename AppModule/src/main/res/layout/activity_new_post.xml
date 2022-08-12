@@ -113,7 +113,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:text="@string/post"
-                    android:onClick="@{() -> viewModel.postToFirebase(postTextEt.getText().toString())}"
+                    android:onClick="@{() -> viewModel.postToFirebaseWorker(postTextEt.getText().toString())}"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:backgroundTint="@color/md_light_green_500"

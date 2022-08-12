@@ -20,9 +20,6 @@
         android:theme="@style/Theme.App"
         tools:ignore="DataExtractionRules,LockedOrientationActivity"
         tools:targetApi="31">
-        <service
-            android:name=".PostService"
-            android:exported="false"></service>
 
         <activity
             android:name="com.dxp.micircle.presentation.startup.splash.SplashActivity"
@@ -34,23 +31,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".presentation.startup.login.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".presentation.startup.registration.RegistrationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".presentation.dashboard.DashboardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".presentation.new_post.NewPostActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name="com.lassi.presentation.mediadirectory.LassiMediaPickerActivity"
             android:exported="true"
@@ -58,6 +60,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.App"
             tools:replace="android:theme" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="com.dxp.micircle.androidx-startup"
+            tools:node="remove"/>
+
     </application>
 
 </manifest>

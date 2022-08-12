@@ -70,7 +70,9 @@
     <string name="share_your_thoughts">Share your thoughts…</string>
     <string name="post">Post</string>
     <string name="maybe_next_time">May be next time \ud83d\ude07</string>
-    <string name="posted_to_timeline_success">Posted to your timeline... Yayy!</string>
+    <string name="posted_to_timeline_success">Posted to your timeline… Yayy!</string>
+    <string name="posting_to_timeline_info">Posting to your timeline, Check notification bar progress!</string>
     <string name="post_failed_try_again">Post failed, Try again!</string>
+    <string name="post_upload">Post Upload</string>
 
 </resources>

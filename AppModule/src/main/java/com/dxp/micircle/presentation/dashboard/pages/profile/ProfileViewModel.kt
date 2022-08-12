@@ -1,8 +1,8 @@
 package com.dxp.micircle.presentation.dashboard.pages.profile
 
 import com.dxp.micircle.R
+import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.usecase.FirebaseUserLogout
-import com.dxp.micircle.helpers.AppSchedulers
 import com.dxp.micircle.presentation.base.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

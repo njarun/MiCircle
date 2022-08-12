@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dxp.micircle.Config
 import com.dxp.micircle.R
-import com.dxp.micircle.data.entities.PrivacyType
-import com.dxp.micircle.domain.dto.model.MediaModel
-import com.dxp.micircle.domain.dto.model.PostModel
+import com.dxp.micircle.domain.entities.PrivacyType
+import com.dxp.micircle.domain.router.model.MediaModel
+import com.dxp.micircle.domain.router.model.PostModel
 import com.dxp.micircle.domain.usecase.FirebasePostToBackend
 import com.dxp.micircle.domain.usecase.MapMediaToModel
 import com.dxp.micircle.presentation.base.*
@@ -164,6 +164,66 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
 
                         postRef?.removeValue()
                         postMediaRef?.delete()
+                    }
+                }
+            }
+        }
+    }
+
+    fun postToFirebaseWorker(text: String?) {
+
+        Timber.d("postToFirebaseWorker")
+
+        if(text.isNullOrEmpty() && mediaModelsLive.value.isNullOrEmpty()) {
+
+            emitAction(ShowToast(R.string.maybe_next_time))
+            emitAction(CloseScreen)
+        }
+        else {
+
+            firebaseAuth.currentUser?.let {
+
+                val postId = UUID.randomUUID().toString()
+                mediaModelsLive.value?.forEach {
+                    it.postId = postId
+                }
+
+                val postModel = PostModel(
+                    postId,
+                    it.uid,
+                    System.currentTimeMillis(),
+                    text,
+                    PrivacyType.PUBLIC.value,
+                    mediaModelsLive.value)
+
+                apiJob = viewModelScope.launch {
+
+                    try {
+
+                        postData.executeWorker(postModel).onStart {
+
+                            _viewRefreshState.postValue(true)
+                        }
+                        .catch {
+
+                            _viewRefreshState.postValue(false)
+
+                            emitAction(OnException(it))
+                        }
+                        .collect {
+
+                            _viewRefreshState.postValue(false)
+                            emitAction(ShowToast(R.string.posting_to_timeline_info))
+                            emitAction(CloseScreen)
+                        }
+                    }
+                    catch (e: Exception) {
+
+                        e.printStackTrace()
+
+                        _viewRefreshState.postValue(false)
+
+                        emitAction(OnException(e))
                     }
                 }
             }

@@ -8,7 +8,7 @@
 
         <variable
             name="mediaModel"
-            type="com.dxp.micircle.domain.dto.model.MediaModel" />
+            type="com.dxp.micircle.domain.router.model.MediaModel" />
 
         <variable
             name="position"

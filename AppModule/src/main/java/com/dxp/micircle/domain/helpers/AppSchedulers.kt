@@ -1,4 +1,4 @@
-package com.dxp.micircle.helpers
+package com.dxp.micircle.domain.helpers
 
 import com.dxp.micircle.di.annotations.IoScheduler
 import com.dxp.micircle.di.annotations.UiScheduler

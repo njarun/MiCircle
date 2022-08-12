@@ -2,7 +2,7 @@ package com.dxp.micircle.presentation.new_post
 
 import com.dxp.micircle.R
 import com.dxp.micircle.databinding.ItemMediaPreviewBinding
-import com.dxp.micircle.domain.dto.model.MediaModel
+import com.dxp.micircle.domain.router.model.MediaModel
 import com.dxp.micircle.presentation.base.adapters.ItemListener
 import com.dxp.micircle.presentation.base.adapters.recyclerview.BaseAdapter
 
