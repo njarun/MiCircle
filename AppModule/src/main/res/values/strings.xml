@@ -12,6 +12,7 @@
     <string name="add_a_new_post_to_timeline">Add a new post to timeline</string>
     <string name="action_icon_left">Action icon left</string>
     <string name="clear_selected_media">Clear selected media</string>
+    <string name="new_post_media_preview">New post media preview</string>
 
     <!-- Server Strings -->
     <string name="server_not_reachable">Server not reachable</string>
@@ -68,6 +69,5 @@
     <string name="new_post">New Post</string>
     <string name="share_your_thoughts">Share your thoughts…</string>
     <string name="post">Post</string>
-
 
 </resources>

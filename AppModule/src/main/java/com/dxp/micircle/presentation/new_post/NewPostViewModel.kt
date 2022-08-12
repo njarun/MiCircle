@@ -2,11 +2,13 @@ package com.dxp.micircle.presentation.new_post
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.dxp.micircle.R
 import com.dxp.micircle.domain.dto.model.MediaModel
 import com.dxp.micircle.domain.usecase.MapMiMediaToMediaModel
 import com.dxp.micircle.presentation.base.BaseViewModel
 import com.dxp.micircle.presentation.base.OnException
 import com.dxp.micircle.presentation.base.OpenMediaPicker
+import com.dxp.micircle.presentation.base.ShowToast
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import com.dxp.micircle.presentation.base.adapters.ItemListener
 import com.lassi.data.media.MiMedia
@@ -78,13 +80,16 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMiMediaToMedia
     }
 
     override fun onItemSelected(position: Int, itemObj: BaseListItem) { //From Media Preview List
-
-
+        emitAction(ShowToast(R.string.out_of_scope_functionalities))
     }
 
     override fun onItemRemoved(position: Int, itemObj: BaseListItem) { //From Media Preview List
 
+        _mediaModelsLive.value = _mediaModelsLive.value?.apply {
 
+            if(size > position)
+                removeAt(position)
+        }
     }
 
     override fun onScrolledToEnd(position: Int) { //From Media Preview List

@@ -73,8 +73,11 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:adapter="@{adapter}"
             app:dataSet="@{viewModel.mediaModelsLive}"
-            android:orientation="horizontal"
+            app:scrollToLast="@{true}"
+            android:paddingTop="20dp"
             android:paddingBottom="20dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
             tools:listitem="@layout/item_media_preview"/>
 
         <View

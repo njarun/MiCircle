@@ -28,12 +28,12 @@ fun View.showToast(message: String?) {
     }
 }
 
-@BindingAdapter(value = ["adapter", "dataSet"], requireAll = true) @Suppress("UNCHECKED_CAST")
-fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdapter<*, *, *>?, recyclerviewDataset: List<BaseListItem>?) {
+@BindingAdapter(value = ["adapter", "dataSet", "scrollToLast"], requireAll = true) @Suppress("UNCHECKED_CAST")
+fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdapter<*, *, *>?, recyclerviewDataset: List<BaseListItem>?, scrollToLast: Boolean) {
 
     var adapter = recyclerviewAdapter as BaseAdapter<ViewDataBinding, BaseListItem, ItemListener>?
     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-    val firstVisibleItem = layoutManager.findFirstCompletelyVisibleItemPosition()
+    var scrollToItemPos = layoutManager.findFirstCompletelyVisibleItemPosition()
 
     adapter?.let {
 
@@ -62,8 +62,12 @@ fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdap
 
         adapter!!.updateData(recyclerviewDataset ?: listOf())
 
-        if(firstVisibleItem >= 0)
-            recyclerView.scrollToPosition(firstVisibleItem)
+        if(scrollToLast && scrollToItemPos >= 0) {
+            scrollToItemPos = (adapter!!.itemCount - 1)
+        }
+
+        if(scrollToItemPos >= 0)
+            recyclerView.post{ layoutManager.scrollToPosition(scrollToItemPos) }
     }
 }
 
