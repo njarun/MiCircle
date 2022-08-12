@@ -56,7 +56,7 @@ class NewPostActivity : BaseActivity<ActivityNewPostBinding, NewPostViewModel>()
             .setGridSize(3)
             .setMediaType(MediaType.IMAGE)
             .setCompressionRation(50)
-            .setSupportedFileTypes("jpg", "jpeg", "png", "webp", "gif")
+            .setSupportedFileTypes("jpg", "jpeg", "png", "webp", "gif") //@Todo enable other media types too -- nj
             .setStatusBarColor(R.color.window_bg_color)
             .setToolbarColor(R.color.window_bg_color)
             .setToolbarResourceColor(R.color.action_bar_item_color)

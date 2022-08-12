@@ -26,6 +26,12 @@ android {
             useSupportLibrary true
         }
 
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
+
         buildFeatures {
 
             dataBinding = true
@@ -124,8 +130,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
-    implementation 'com.google.firebase:firebase-auth:21.0.7'
-    implementation 'com.google.firebase:firebase-core:21.1.0'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-core'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     //Hilt
     implementation 'com.google.dagger:hilt-android:2.43'
@@ -145,6 +152,13 @@ dependencies {
 
     //Media picker
     implementation ('com.github.Mindinventory:Lassi:1.0.0')
+
+    //room
+    implementation "androidx.room:room-runtime:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
+    implementation "androidx.room:room-rxjava2:2.4.3"
+    testImplementation "androidx.room:room-testing:2.4.3"
 }
 
 kapt {

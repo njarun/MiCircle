@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class MapMiMediaToMediaModel @Inject constructor(private val mapperEntityData: MediaEntityData,
-                                                 private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
+class MapMediaToModel @Inject constructor(private val mapperEntityData: MediaEntityData,
+                                          private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
 
     fun execute(miMediaList: List<MiMedia>) = flow {
 

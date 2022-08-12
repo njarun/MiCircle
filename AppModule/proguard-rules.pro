@@ -23,6 +23,6 @@
 -keepattributes Signature
 -keepattributes *Annotation*
 
--keepclassmembers class com.dxp.models.** { *; } #ToDo -- nj
+-keepclassmembers class com.dxp.models.** { *; } #Todo -- nj
 
 -dontwarn com.bumptech.glide.**

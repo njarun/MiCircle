@@ -36,7 +36,7 @@
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:imageUrl="@{mediaModel.path}"
+            app:imageUrl="@{mediaModel.url}"
             app:placeholder="@{com.dxp.micircle.R.drawable.ic_image_placeholder}"
             android:contentDescription="@string/new_post_media_preview" />
 
