@@ -5,12 +5,6 @@
     <data>
 
         <import type="android.view.View" />
-        <import type="android.view.Gravity" />
-        <import type="android.graphics.Typeface" />
-
-        <variable
-            name="treatAsMainPage"
-            type="Boolean" />
 
         <variable
             name="pageTitle"
@@ -63,12 +57,11 @@
 
             <TextView
                 android:id="@+id/page_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="?android:attr/actionBarSize"
-                android:textSize="@{treatAsMainPage ? @dimen/heading_main : @dimen/heading_normal}"
-                android:typeface="@{Typeface.defaultFromStyle(treatAsMainPage ? Typeface.BOLD_ITALIC : Typeface.BOLD)}"
-                android:gravity="@{treatAsMainPage ? Gravity.CENTER : Gravity.START}"
+                android:textSize="@dimen/heading_main"
+                android:textStyle="bold|italic"
+                android:layout_gravity="center"
                 android:textColor="@color/action_bar_item_color"
                 android:text="@{pageTitle}" />
 

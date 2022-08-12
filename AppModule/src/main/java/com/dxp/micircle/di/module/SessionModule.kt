@@ -1,5 +1,6 @@
 package com.dxp.micircle.di.module
 
+import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.di.annotations.IoScheduler
 import com.dxp.micircle.di.annotations.UiScheduler
 import dagger.Module
@@ -14,6 +15,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SessionModule {
+
+    @Provides
+    fun provideCoroutineDispatcher() = CoroutineDispatcherProvider()
 
     @IoScheduler
     @Singleton

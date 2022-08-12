@@ -24,3 +24,5 @@
 -keepattributes *Annotation*
 
 -keepclassmembers class com.dxp.models.** { *; } #ToDo -- nj
+
+-dontwarn com.bumptech.glide.**

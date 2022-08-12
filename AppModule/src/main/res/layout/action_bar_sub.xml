@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="pageTitle"
+            type="String" />
+
+        <variable
+            name="baseViewModel"
+            type="com.dxp.micircle.presentation.base.BaseViewModel" />
+
+    </data>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:fitsSystemWindows="true"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        app:elevation="8dp"
+        android:animateLayoutChanges="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/action_bar_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentInsetEnd="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetStart="0dp"
+            android:animateLayoutChanges="true"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupTheme">
+
+            <ImageView
+                android:id="@+id/left_icon"
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                app:tint="@color/action_bar_item_color"
+                android:onClick="@{() -> baseViewModel.onBackPressed()}"
+                android:layout_gravity="center_vertical|start"
+                android:src="@drawable/ic_action_back"
+                android:contentDescription="@string/action_icon_left" />
+
+            <TextView
+                android:id="@+id/page_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/heading_normal"
+                android:textStyle="bold"
+                android:textColor="@color/action_bar_item_color"
+                android:text="@{pageTitle}" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</layout>

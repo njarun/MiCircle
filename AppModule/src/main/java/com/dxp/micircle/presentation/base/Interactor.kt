@@ -12,6 +12,7 @@ object OnBackPressed: Interactor
 object OnNewAccount : Interactor
 object OnLogout : Interactor
 object OnNewPost : Interactor
+object OpenMediaPicker : Interactor
 
 object OnSuccess : Interactor
 object OnFailed : Interactor

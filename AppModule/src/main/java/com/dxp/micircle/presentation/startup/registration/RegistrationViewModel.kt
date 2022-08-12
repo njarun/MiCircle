@@ -1,7 +1,5 @@
 package com.dxp.micircle.presentation.startup.registration
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.dxp.micircle.R
 import com.dxp.micircle.domain.usecase.FirebaseRegisterUser
 import com.dxp.micircle.helpers.AppSchedulers
@@ -16,9 +14,6 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
 
     @Inject
     lateinit var schedulers: AppSchedulers
-
-    private val _viewRefreshState = MutableLiveData(false)
-    val viewRefreshState: LiveData<Boolean> = _viewRefreshState
 
     fun initiateRegistration(fName: String, lName: String, username: String, password: String, confPassword: String): Boolean {
 

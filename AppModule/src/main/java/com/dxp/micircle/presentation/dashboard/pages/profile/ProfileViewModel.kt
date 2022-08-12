@@ -1,7 +1,5 @@
 package com.dxp.micircle.presentation.dashboard.pages.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.dxp.micircle.R
 import com.dxp.micircle.domain.usecase.FirebaseUserLogout
 import com.dxp.micircle.helpers.AppSchedulers
@@ -14,9 +12,6 @@ class ProfileViewModel @Inject constructor(private val userLogout: FirebaseUserL
 
     @Inject
     lateinit var schedulers: AppSchedulers
-
-    private val _viewRefreshState = MutableLiveData(false)
-    val viewRefreshState: LiveData<Boolean> = _viewRefreshState
 
     fun logout() {
 

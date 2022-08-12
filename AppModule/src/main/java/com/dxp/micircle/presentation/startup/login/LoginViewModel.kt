@@ -1,7 +1,5 @@
 package com.dxp.micircle.presentation.startup.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.dxp.micircle.R
 import com.dxp.micircle.domain.usecase.FirebaseUserLogin
 import com.dxp.micircle.helpers.AppSchedulers
@@ -16,9 +14,6 @@ class LoginViewModel @Inject constructor(private val userLogin: FirebaseUserLogi
 
     @Inject
     lateinit var schedulers: AppSchedulers
-
-    private val _viewRefreshState = MutableLiveData(false)
-    val viewRefreshState: LiveData<Boolean> = _viewRefreshState
 
     fun tryLoginWithUserPass(username: String, password: String): Boolean {
 

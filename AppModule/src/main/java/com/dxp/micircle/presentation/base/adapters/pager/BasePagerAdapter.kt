@@ -18,7 +18,7 @@ abstract class BasePagerAdapter<BINDING : ViewDataBinding, T : BaseListItem, ite
     abstract fun bind(binding: BINDING, item: T, itemPos: String)
 
     fun onScrolled(pos: Int) {
-        listener.onScrolled(pos)
+        listener.onScrolledToEnd(pos)
     }
 
     fun updateData(list: List<T>) {

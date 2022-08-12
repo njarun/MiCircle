@@ -23,58 +23,10 @@
         android:orientation="vertical"
         tools:context=".presentation.dashboard.DashboardActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <include layout="@layout/action_bar_main"
             android:id="@+id/action_bar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:fitsSystemWindows="true"
-            android:paddingEnd="0dp"
-            android:paddingStart="0dp"
-            app:elevation="8dp"
-            android:animateLayoutChanges="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/action_bar_tool_bar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentInsetEnd="0dp"
-                android:contentInsetLeft="0dp"
-                android:contentInsetRight="0dp"
-                android:contentInsetStart="0dp"
-                android:animateLayoutChanges="true"
-                app:contentInsetEnd="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetRight="0dp"
-                app:contentInsetStart="0dp"
-                app:contentInsetStartWithNavigation="0dp"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/AppTheme.PopupTheme">
-
-                <ImageView
-                    android:id="@+id/left_icon"
-                    android:layout_width="?android:attr/actionBarSize"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    app:tint="@color/action_bar_item_color"
-                    android:onClick="@{() -> viewModel.postMessage(@string/out_of_scope_functionalities)}"
-                    android:layout_gravity="center_vertical|start"
-                    android:src="@drawable/ic_action_search"
-                    android:contentDescription="@string/action_icon_left" />
-
-                <TextView
-                    android:id="@+id/page_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/heading_main"
-                    android:textStyle="bold|italic"
-                    android:layout_gravity="center"
-                    android:textColor="@color/action_bar_item_color"
-                    android:text="@string/app_name" />
-
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
+            app:pageTitle="@{@string/app_name}"
+            app:baseViewModel="@{viewModel}"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/host_main"

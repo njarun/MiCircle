@@ -12,6 +12,9 @@ import io.reactivex.subjects.Subject
 
 open class BaseViewModel : ViewModel() {
 
+    protected val _viewRefreshState = MutableLiveData(false)
+    val viewRefreshState: LiveData<Boolean> = _viewRefreshState
+
     private val _formsErrorMld = MutableLiveData<MutableMap<String, @StringRes Int>>(mutableMapOf())
     val formsErrorLd: LiveData<MutableMap<String, Int>> = _formsErrorMld
 

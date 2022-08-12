@@ -9,17 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import com.dxp.micircle.presentation.base.adapters.ItemListener
 
-abstract class BaseAdapter<BINDING : ViewDataBinding, T : BaseListItem, itemListener: ItemListener>(var data: List<T>, val listener: ItemListener) : RecyclerView.Adapter<BaseViewHolder<BINDING>>() {
+abstract class BaseAdapter<BINDING : ViewDataBinding, T : BaseListItem,
+        itemListener: ItemListener>(var data: List<T>, val listener: ItemListener):
+    RecyclerView.Adapter<BaseViewHolder<BINDING>>() {
 
     @get:LayoutRes
     abstract val layoutId: Int
 
-    abstract fun bind(binding: BINDING, item: T, itemPos: String)
+    abstract fun bind(binding: BINDING, item: T, itemPos: Int)
 
     override fun getItemCount(): Int = data.size
 
-    fun onScrolled(pos: Int) {
-        listener.onScrolled(pos)
+    fun onScrolledToEnd(pos: Int) {
+        listener.onScrolledToEnd(pos)
     }
 
     fun updateData(list: List<T>) {
@@ -34,6 +36,7 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : BaseListItem, itemList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BINDING> {
+
         val binder = DataBindingUtil.inflate<BINDING>(
             LayoutInflater.from(parent.context),
             layoutId,
@@ -45,6 +48,6 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : BaseListItem, itemList
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<BINDING>, position: Int) {
-        bind(holder.binder, data[position], "${position+1} / $itemCount")
+        bind(holder.binder, data[position], position)
     }
 }
