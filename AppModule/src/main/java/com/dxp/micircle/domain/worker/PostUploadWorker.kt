@@ -43,7 +43,7 @@ private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: Fir
 
         try {
 
-            Timber.d("Hello from Worker")
+            Timber.d("Hello from ${context.getString(R.string.app_name)} Worker") // :D
 
             setForeground(createForegroundInfo())
 
@@ -69,23 +69,35 @@ private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: Fir
 
                     postModel.mediaList?.forEach {
 
-                        updateProgress(getProgress(++currentMedia, postModel.mediaList.size), false)
+                        try {
 
-                        val file = Uri.fromFile(File(it.url))
-                        val mediaRef = postMediaRef.child("${it.mediaId}.${file.lastPathSegment}")
+                            updateProgress(getProgress(++currentMedia, postModel.mediaList.size), false)
 
-                        val uploadTask = mediaRef.putFile(file)
-                        Tasks.await(uploadTask)
+                            if(!it.url.startsWith(Config.FBS_STORAGE_PATH)) { //Check if already uploaded
 
-                        if(uploadTask.isSuccessful) {
+                                val file = File(it.url)
 
-                            val urlTask = mediaRef.downloadUrl
-                            Tasks.await(urlTask)
-                            if(urlTask.isSuccessful)
-                                it.url = urlTask.result.toString()
-                            else throw urlTask.exception ?: Exception("-1")
+                                if(file.exists()) { //Check file exists at the time of upload
+
+                                    val fileUri = Uri.fromFile(file)
+                                    val mediaRef = postMediaRef.child("${it.mediaId}.${fileUri.lastPathSegment}")
+
+                                    val uploadTask = mediaRef.putFile(fileUri)
+                                    Tasks.await(uploadTask)
+
+                                    if(uploadTask.isSuccessful) {
+
+                                        val urlTask = mediaRef.downloadUrl
+                                        Tasks.await(urlTask)
+                                        if(urlTask.isSuccessful)
+                                            it.url = urlTask.result.toString()
+                                        else throw urlTask.exception ?: Exception("-1")
+                                    }
+                                    else throw uploadTask.exception ?: Exception("-1")
+                                }
+                            }
                         }
-                        else throw uploadTask.exception ?: Exception("-1")
+                        catch (ignore: Exception) { } //Ignore error and move on! -- Also inform user :D
                     }
 
                     updateProgress(100, true)
