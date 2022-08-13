@@ -94,10 +94,12 @@ private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: Fir
                                         else throw urlTask.exception ?: Exception("-1")
                                     }
                                     else throw uploadTask.exception ?: Exception("-1")
+
+                                    postsRepository.updateMedia(it)
                                 }
                             }
                         }
-                        catch (ignore: Exception) { } //Ignore error and move on! -- Also inform user :D
+                        catch (ignore: Exception) { } //Handle this! -- Also inform user :D
                     }
 
                     updateProgress(100, true)

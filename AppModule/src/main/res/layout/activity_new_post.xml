@@ -51,6 +51,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="top|start"
+                        android:inputType="textMultiLine"
                         android:afterTextChanged="@{(text) -> postTextCountTv.setText(text.toString().trim().length > 0 ? (text.toString().trim().length + `/` + Config.POST_TEXT_LIMIT) : ``)}"
                         android:hint="@string/share_your_thoughts"
                         android:minLines="3"

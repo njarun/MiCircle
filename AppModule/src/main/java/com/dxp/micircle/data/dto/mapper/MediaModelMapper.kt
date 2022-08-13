@@ -24,4 +24,15 @@ object MediaModelMapper {
 
         return modelList
     }
+
+    fun MediaModel.toMediaEntity(): MediaEntity {
+
+        return MediaEntity(
+            mediaId,
+            postId,
+            type,
+            url,
+            size,
+        )
+    }
 }

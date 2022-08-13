@@ -52,7 +52,7 @@ class NewPostActivity : BaseActivity<ActivityNewPostBinding, NewPostViewModel>()
 
         val intent = Lassi(this)
             .with(LassiOption.CAMERA_AND_GALLERY)
-            .setMaxCount(5)
+            .setMaxCount(15)
             .setGridSize(3)
             .setMediaType(MediaType.IMAGE)
             .setCompressionRation(50)
