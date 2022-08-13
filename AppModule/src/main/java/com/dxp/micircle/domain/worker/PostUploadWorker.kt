@@ -73,7 +73,7 @@ private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: Fir
 
                             updateProgress(getProgress(++currentMedia, postModel.mediaList.size), false)
 
-                            if(!it.url.startsWith(Config.FBS_STORAGE_PATH)) { //Check if already uploaded
+                            if(!it.url.startsWith(Config.FBS_STORAGE_PATH)) { //Check if already uploaded - @Todo Move this to a flag and remove the url check -- nj
 
                                 val file = File(it.url)
 
