@@ -1,11 +1,23 @@
 package com.dxp.micircle.domain.usecase
 
+import androidx.work.WorkManager
+import com.dxp.micircle.data.router.CoroutineDispatcherProvider
+import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class FirebaseUserLogout @Inject constructor(private val firebaseAuth: FirebaseAuth) {
+class FirebaseUserLogout @Inject constructor(private val firebaseAuth: FirebaseAuth,
+                             private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
+
+    @Inject
+    lateinit var workManager: WorkManager
+
+    @Inject
+    lateinit var postsRepository: PostsRepository
 
     operator fun invoke() : Single<Boolean> {
 
@@ -25,5 +37,18 @@ class FirebaseUserLogout @Inject constructor(private val firebaseAuth: FirebaseA
                 subject.onError(e)
             }
         }
+    }
+
+    fun clearUserData() = flow {
+
+        workManager.cancelAllWork()
+        clearDatabase()
+        emit(false)
+
+    }
+    .flowOn(coroutineDispatcherProvider.IO())
+
+    private suspend fun clearDatabase() {
+        return postsRepository.deleteAllPosts()
     }
 }

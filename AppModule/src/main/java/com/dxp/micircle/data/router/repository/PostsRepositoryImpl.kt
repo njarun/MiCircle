@@ -45,4 +45,10 @@ class PostsRepositoryImpl @Inject constructor(private val postDao: PostDao, priv
         postDao.delete(postId)
         mediaDao.delete(postId)
     }
+
+    override suspend fun deleteAllPosts() {
+
+        postDao.delete()
+        mediaDao.delete()
+    }
 }

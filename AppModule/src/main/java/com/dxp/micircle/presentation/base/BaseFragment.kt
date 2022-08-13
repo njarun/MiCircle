@@ -28,14 +28,14 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActivity = activity as BaseActivity<*, *>
-        vmOperationsDisposible = viewModel
-            .interactions
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { handleVMInteractions(it) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding = constructViewBinding()
+        vmOperationsDisposible = viewModel
+            .interactions
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { handleVMInteractions(it) }
         return viewBinding?.root
     }
 

@@ -11,4 +11,6 @@ interface PostsRepository {
     suspend fun savePost(postModel: PostModel)
 
     suspend fun deletePost(postId: String)
+
+    suspend fun deleteAllPosts()
 }
