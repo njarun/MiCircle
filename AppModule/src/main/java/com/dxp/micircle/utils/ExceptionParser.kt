@@ -12,13 +12,13 @@ import java.net.UnknownHostException
 
 object ExceptionParser {
 
-    fun getMessage(exception: Exception): Int {
+    fun getMessage(exception: Exception, level: Int = 1): Int {
 
         return when (exception) {
 
             is FirebaseAuthInvalidCredentialsException -> R.string.email_password_error
             is FirebaseAuthUserCollisionException -> R.string.user_already_exists
-            else -> parseException(exception)
+            else -> exception.cause?.let { getMessage(it as Exception, 2) } ?: parseException(exception)
         }
     }
 
