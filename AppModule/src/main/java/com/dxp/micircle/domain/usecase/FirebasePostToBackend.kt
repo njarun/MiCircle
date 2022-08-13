@@ -43,6 +43,7 @@ class FirebasePostToBackend @Inject constructor(private val workManager: WorkMan
 
                 val data = Data.Builder()
                     .putString(Constants.EXTRA_POST_ID, postModel.postId)
+                    .putString(Constants.EXTRA_USER_ID, postModel.userId)
                     .build()
 
                 val constraints = Constraints.Builder()

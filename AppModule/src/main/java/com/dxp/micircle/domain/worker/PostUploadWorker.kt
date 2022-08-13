@@ -22,7 +22,9 @@ import com.dxp.micircle.R
 import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.dxp.micircle.utils.Constants
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.internal.api.FirebaseNoSignedInUserException
 import com.google.firebase.storage.FirebaseStorage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -32,8 +34,9 @@ import java.util.*
 
 @HiltWorker @Suppress("BlockingMethodInNonBlockingContext")
 class PostUploadWorker @AssistedInject constructor(@Assisted val context: Context,
-@Assisted val params: WorkerParameters, private val postsRepository: PostsRepository,
-private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: FirebaseStorage) : CoroutineWorker(context, params) {
+@Assisted val params: WorkerParameters, private val firebaseAuth: FirebaseAuth,
+private val postsRepository: PostsRepository, private val firebaseDatabase: FirebaseDatabase,
+private val firebaseStorage: FirebaseStorage) : CoroutineWorker(context, params) {
 
     private val notiChannelId = Constants.NEW_POST_WORKER_NOTIFICATION_CHANNEL_ID
     private val notiId = (1023..11589).random()
@@ -48,12 +51,11 @@ private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: Fir
             setForeground(createForegroundInfo())
 
             val postId = inputData.getString(Constants.EXTRA_POST_ID)
+            val userId = inputData.getString(Constants.EXTRA_USER_ID)
 
-            postId?.let {
+            if(validUser(userId) && postId != null) {
 
-                val post = postsRepository.getPost(postId)
-
-                post?.let { postModel ->
+                postsRepository.getPost(postId)?.let { postModel ->
 
                     updateProgress(0, true)
 
@@ -67,61 +69,75 @@ private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: Fir
 
                     var currentMedia = 0
 
-                    postModel.mediaList?.forEach {
+                    postModel.mediaList?.forEach { mediaModel ->
 
                         try {
 
-                            updateProgress(getProgress(++currentMedia, postModel.mediaList.size), false)
+                            if(validUser(userId)) {
 
-                            if(!it.url.startsWith(Config.FBS_STORAGE_PATH)) { //Check if already uploaded - @Todo Move this to a flag and remove the url check -- nj
+                                updateProgress(getProgress(++currentMedia, postModel.mediaList.size), false)
 
-                                val file = File(it.url)
+                                if(!mediaModel.url.startsWith(Config.FBS_STORAGE_PATH)) { //Check if already uploaded - @Todo Move this to a flag and remove the url check -- nj
 
-                                if(file.exists()) { //Check file exists at the time of upload
+                                    val file = File(mediaModel.url)
 
-                                    val fileUri = Uri.fromFile(file)
-                                    val mediaRef = postMediaRef.child("${it.mediaId}.${fileUri.lastPathSegment}")
+                                    if(file.exists()) { //Check file exists at the time of upload
 
-                                    val uploadTask = mediaRef.putFile(fileUri)
-                                    Tasks.await(uploadTask)
+                                        val fileUri = Uri.fromFile(file)
+                                        val mediaRef = postMediaRef.child("${mediaModel.mediaId}.${fileUri.lastPathSegment}")
 
-                                    if(uploadTask.isSuccessful) {
+                                        val uploadTask = mediaRef.putFile(fileUri)
+                                        Tasks.await(uploadTask)
 
-                                        val urlTask = mediaRef.downloadUrl
-                                        Tasks.await(urlTask)
-                                        if(urlTask.isSuccessful)
-                                            it.url = urlTask.result.toString()
-                                        else throw urlTask.exception ?: Exception("-1")
+                                        if(uploadTask.isSuccessful) {
+
+                                            val urlTask = mediaRef.downloadUrl
+                                            Tasks.await(urlTask)
+                                            if(urlTask.isSuccessful)
+                                                mediaModel.url = urlTask.result.toString()
+                                            else throw urlTask.exception ?: Exception("-1")
+                                        }
+                                        else throw uploadTask.exception ?: Exception("-1")
+
+                                        postsRepository.updateMedia(mediaModel)
                                     }
-                                    else throw uploadTask.exception ?: Exception("-1")
-
-                                    postsRepository.updateMedia(it)
                                 }
                             }
                         }
-                        catch (ignore: Exception) { } //Handle this! -- Also inform user :D
+                        catch (e: Exception) {
+                            throw e
+                        }
                     }
 
-                    updateProgress(100, true)
+                    if(validUser(userId)) {
 
-                    val postTask = postRef.setValue(postModel)
-                    Tasks.await(postTask)
+                        updateProgress(100, true)
 
-                    if(!postTask.isSuccessful)
-                        throw postTask.exception ?: Exception("-1")
+                        val postTask = postRef.setValue(postModel)
+                        Tasks.await(postTask)
 
-                    postsRepository.deletePost(postId)
+                        if(!postTask.isSuccessful)
+                            throw postTask.exception ?: Exception("-1")
 
-                    updateProgress(100, false)
+                        postsRepository.deletePost(postId)
+
+                        updateProgress(100, false)
+                    }
                 }
             }
         }
-        catch (e: Exception) {
+        catch (e: Exception) { //Handle this! -- Also inform user :D
 
-            return Result.failure()
+            if(e !is FirebaseNoSignedInUserException) {
+                return Result.failure()
+            }
         }
 
         return Result.success()
+    }
+
+    private fun validUser(userId: String?) : Boolean {
+        return userId != null && firebaseAuth.currentUser != null && userId == firebaseAuth.currentUser!!.uid
     }
 
     private fun createForegroundInfo(): ForegroundInfo {
@@ -131,7 +147,7 @@ private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: Fir
 
     private fun createNotification() : Notification {
 
-        WorkManager.getInstance(context).createCancelPendingIntent(id)
+        val cancelIndent = WorkManager.getInstance(context).createCancelPendingIntent(id) //May be later! :D
 
         val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
         intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

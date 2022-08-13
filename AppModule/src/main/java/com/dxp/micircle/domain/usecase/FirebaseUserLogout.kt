@@ -31,6 +31,8 @@ class FirebaseUserLogout @Inject constructor(private val firebaseAuth: FirebaseA
                 }
 
                 firebaseAuth.signOut()
+
+                //Todo - Get the current WM post reference and delete the post from server -- nj
             }
             catch (e: Exception) {
 
