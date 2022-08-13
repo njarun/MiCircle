@@ -55,12 +55,13 @@
     <string name="new_here">New here?</string>
     <string name="signup">Signup!</string>
 
+    <string name="new_account">New\nAccount !!</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="enter_email_hint">Enter your email</string>
     <string name="hint_create_password">Create password</string>
     <string name="hint_confirm_password">Confirm password</string>
-    <string name="new_account">New\nAccount !!</string>
+    <string name="register">Register</string>
 
     <string name="home">Home</string>
     <string name="profile">Profile</string>

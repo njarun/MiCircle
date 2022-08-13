@@ -1,66 +1,57 @@
 package com.dxp.micircle.domain.usecase
 
 import com.dxp.micircle.Config
-import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.domain.router.model.UserModel
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import io.reactivex.Single
+import io.reactivex.subjects.SingleSubject
 import javax.inject.Inject
 
 
-@Suppress("BlockingMethodInNonBlockingContext")
 class FirebaseRegisterUser @Inject constructor(private val firebaseAuth: FirebaseAuth,
-                                               private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
+                                        private var firebaseDatabase: FirebaseDatabase) {
 
-    @Inject
-    lateinit var firebaseDatabase: FirebaseDatabase
+    fun invoke(fName: String, lName: String, username: String, password: String) : Single<Boolean> {
 
-    fun execute(fName: String, lName: String, username: String, password: String) = flow {
+        val subject = SingleSubject.create<Boolean>()
+        return subject.doOnSubscribe {
 
-        try {
+            firebaseAuth.createUserWithEmailAndPassword(username, password)
+                .addOnCompleteListener{ task ->
 
-            val task = firebaseAuth.createUserWithEmailAndPassword(username, password)
-            Tasks.await(task)
+                    if (task.isSuccessful) {
 
-            if (task.isSuccessful) {
+                        firebaseAuth.currentUser?.let {
 
-                firebaseAuth.currentUser?.let {
+                            val postRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
+                                .child(it.uid)
 
-                    val postRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
-                        .child(it.uid)
+                            val userModel = UserModel(it.uid,
+                                System.currentTimeMillis(),
+                                fName,
+                                lName,
+                                null)
 
-                    val userModel = UserModel(it.uid,
-                        System.currentTimeMillis(),
-                        fName,
-                        lName,
-                        null)
+                            postRef.setValue(userModel).addOnCompleteListener { updateResponse ->
 
-                    val postTask = postRef.setValue(userModel)
-                    Tasks.await(postTask)
+                                if (updateResponse.isSuccessful) {
 
-                    if (postTask.isSuccessful) {
+                                    subject.onSuccess(true)
+                                }
+                                else {
 
-                        emit(false)
+                                    task.exception?.let { it-> subject.onError(it) } ?: subject.onSuccess(false)
+                                    it.delete()
+                                }
+                            }
+                        } ?: subject.onSuccess(false)
                     }
                     else {
 
-                        it.delete()
-                        throw postTask.exception ?: Exception("-1")
+                        task.exception?.let { it -> subject.onError(it) } ?: subject.onSuccess(false)
                     }
-                } ?: throw Exception("-1")
-            }
-            else {
-
-                throw task.exception ?: Exception("-1")
-            }
-        }
-        catch (e: Exception) {
-
-            throw e
+                }
         }
     }
-    .flowOn(coroutineDispatcherProvider.IO())
 }

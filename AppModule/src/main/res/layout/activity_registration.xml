@@ -254,7 +254,7 @@
                     android:layout_marginEnd="24dp"
                     android:minHeight="60dp"
                     android:onClick="@{() -> viewModel.initiateRegistration(fNameEt.getText().toString(), lNameEt.getText().toString(), uNameEt.getText().toString(), passwordEt.getText().toString(), confPasswordEt.getText().toString())}"
-                    android:text="@string/login"
+                    android:text="@string/register"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:backgroundTint="@color/md_light_green_500"

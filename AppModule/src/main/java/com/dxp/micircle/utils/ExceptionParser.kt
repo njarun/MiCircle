@@ -18,7 +18,8 @@ object ExceptionParser {
 
             is FirebaseAuthInvalidCredentialsException -> R.string.email_password_error
             is FirebaseAuthUserCollisionException -> R.string.user_already_exists
-            else -> exception.cause?.let { getMessage(it as Exception, 2) } ?: parseException(exception)
+            else -> if(exception.cause != null && level == 1)
+                getMessage(exception.cause as Exception, 2) else parseException(exception)
         }
     }
 

@@ -33,10 +33,9 @@ class RegistrationActivity : BaseActivity<ActivityRegistrationBinding, Registrat
                 return super.handleVMInteractions(FinishAndOpenNextScreen(DashboardActivity::class.java, true))
             }
 
-            is OnException -> {
+            is OnFailed -> {
 
-                if(interaction.t.message == "-1")
-                    return super.handleVMInteractions(ShowToast(getString(R.string.registration_failed)))
+                return super.handleVMInteractions(ShowToast(getString(R.string.registration_failed)))
             }
         }
 
