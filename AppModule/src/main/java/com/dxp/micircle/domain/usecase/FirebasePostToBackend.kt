@@ -6,6 +6,7 @@ import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.domain.router.model.PostModel
 import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.dxp.micircle.domain.worker.PostUploadWorker
+import com.dxp.micircle.utils.Constants
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
@@ -23,7 +24,7 @@ class FirebasePostToBackend @Inject constructor(private val workManager: WorkMan
         postsRepository.savePost(postModel)
 
         val data = Data.Builder()
-            .putString("POST_ID", postModel.postId)
+            .putString(Constants.EXTRA_POST_ID, postModel.postId)
             .build()
 
         val constraints = Constraints.Builder()
