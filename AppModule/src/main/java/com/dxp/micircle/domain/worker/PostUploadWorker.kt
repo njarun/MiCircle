@@ -30,8 +30,7 @@ import timber.log.Timber
 import java.io.File
 import java.util.*
 
-
-@HiltWorker
+@HiltWorker @Suppress("BlockingMethodInNonBlockingContext")
 class PostUploadWorker @AssistedInject constructor(@Assisted val context: Context,
 @Assisted val params: WorkerParameters, private val postsRepository: PostsRepository,
 private val firebaseDatabase: FirebaseDatabase, private val firebaseStorage: FirebaseStorage) : CoroutineWorker(context, params) {

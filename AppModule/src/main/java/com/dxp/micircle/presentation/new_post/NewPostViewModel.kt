@@ -13,10 +13,6 @@ import com.dxp.micircle.presentation.base.*
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import com.dxp.micircle.presentation.base.adapters.ItemListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.lassi.data.media.MiMedia
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -32,12 +28,6 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
 
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
-
-    @Inject
-    lateinit var firebaseDatabase: FirebaseDatabase
-
-    @Inject
-    lateinit var firebaseStorage: FirebaseStorage
 
     private val _mediaModelsLive = MutableLiveData<ArrayList<MediaModel>>(ArrayList())
     val mediaModelsLive: MutableLiveData<ArrayList<MediaModel>> = _mediaModelsLive
@@ -93,86 +83,9 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
         }
     }
 
-    fun postToFirebase(text: String?) {
+    fun postToBackend(text: String?) {
 
-        Timber.d("postToFirebase")
-
-        if(text.isNullOrEmpty() && mediaModelsLive.value.isNullOrEmpty()) {
-
-            emitAction(ShowToast(R.string.maybe_next_time))
-            emitAction(CloseScreen)
-        }
-        else {
-
-            firebaseAuth.currentUser?.let {
-
-                val postId = UUID.randomUUID().toString()
-                mediaModelsLive.value?.forEach {
-                    it.postId = postId
-                }
-
-                val postModel = PostModel(
-                    postId,
-                    it.uid,
-                    System.currentTimeMillis(),
-                    text,
-                    PrivacyType.PUBLIC.value,
-                    mediaModelsLive.value)
-
-                apiJob = viewModelScope.launch {
-
-                    var postRef: DatabaseReference? = null
-                    var postMediaRef: StorageReference? = null
-
-                    try {
-
-                        postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
-                            .child(postId)
-
-                        postMediaRef = firebaseStorage.reference
-                            .child(postModel.userId)
-                            .child(Config.FBS_POSTS_MEDIA_PATH)
-                            .child(postId)
-
-                        postData.execute(postModel, postRef, postMediaRef).onStart {
-
-                            _viewRefreshState.postValue(true)
-                        }
-                        .catch {
-
-                            _viewRefreshState.postValue(false)
-
-                            emitAction(if(it.message?.equals("-1") == true) ShowToast(R.string.post_failed_try_again) else OnException(it))
-
-                            postRef.removeValue()
-                            postMediaRef.delete()
-                        }
-                        .collect {
-
-                            _viewRefreshState.postValue(false)
-                            emitAction(ShowToast(R.string.posted_to_timeline_success))
-                            emitAction(CloseScreen)
-                        }
-                    }
-                    catch (e: Exception) {
-
-                        e.printStackTrace()
-
-                        _viewRefreshState.postValue(false)
-
-                        emitAction(OnException(e))
-
-                        postRef?.removeValue()
-                        postMediaRef?.delete()
-                    }
-                }
-            }
-        }
-    }
-
-    fun postToFirebaseWorker(text: String?) {
-
-        Timber.d("postToFirebaseWorker")
+        Timber.d("postToBackend")
 
         if(text.isNullOrEmpty() && mediaModelsLive.value.isNullOrEmpty()) {
 
@@ -192,7 +105,7 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
                     postId,
                     it.uid,
                     System.currentTimeMillis(),
-                    text,
+                    text?.take(Config.POST_TEXT_LIMIT),
                     PrivacyType.PUBLIC.value,
                     mediaModelsLive.value)
 
@@ -200,7 +113,7 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
 
                     try {
 
-                        postData.executeWorker(postModel).onStart {
+                        postData.execute(postModel).onStart {
 
                             _viewRefreshState.postValue(true)
                         }
@@ -213,7 +126,9 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
                         .collect {
 
                             _viewRefreshState.postValue(false)
-                            emitAction(ShowToast(R.string.posting_to_timeline_info))
+
+                            emitAction(ShowToast(if(it == 1) R.string.posted_to_timeline_success else R.string.posting_to_timeline_info))
+
                             emitAction(CloseScreen)
                         }
                     }

@@ -71,7 +71,7 @@
     <string name="post">Post</string>
     <string name="maybe_next_time">May be next time \ud83d\ude07</string>
     <string name="posted_to_timeline_success">Posted to your timeline… Yayy!</string>
-    <string name="posting_to_timeline_info">Posting to your timeline, Check notification bar progress!</string>
+    <string name="posting_to_timeline_info">Posting to your timeline, Check notification bar for progress!</string>
     <string name="post_failed_try_again">Post failed, Try again!</string>
     <string name="post_upload">Post Upload</string>
     <string name="posting_to_your_timeline">Posting to your timeline…</string>

@@ -35,92 +35,106 @@
                 app:baseViewModel="@{viewModel}"
                 app:pageTitle="@{@string/new_post}" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/post_text_et"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="top|start"
-                android:afterTextChanged="@{(text) -> postTextCountTv.setText(text.toString().trim().length > 0 ? (text.toString().trim().length + `/` + Config.POST_TEXT_LIMIT) : ``)}"
-                android:hint="@string/share_your_thoughts"
-                android:minLines="3"
-                android:padding="24dp" />
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
-            <View
-                android:id="@+id/count_sep"
-                android:layout_width="100dp"
-                android:layout_height="1dp"
-                android:layout_marginEnd="12dp"
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"
-                android:background="@color/md_grey_300"
-                android:layout_gravity="end"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/post_text_count_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:afterTextChanged="@{(text) -> countSep.setVisibility(text.toString().length > 0 ? View.VISIBLE : View.GONE)}"
-                android:layout_marginEnd="24dp"/>
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/post_text_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="top|start"
+                        android:afterTextChanged="@{(text) -> postTextCountTv.setText(text.toString().trim().length > 0 ? (text.toString().trim().length + `/` + Config.POST_TEXT_LIMIT) : ``)}"
+                        android:hint="@string/share_your_thoughts"
+                        android:minLines="3"
+                        android:padding="24dp" />
 
-            <View
-                android:id="@+id/space_filler"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+                    <View
+                        android:id="@+id/count_sep"
+                        android:layout_width="100dp"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="12dp"
+                        android:visibility="gone"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/md_grey_300"
+                        android:layout_gravity="end"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/media_preview_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:adapter="@{adapter}"
-                app:dataSet="@{viewModel.mediaModelsLive}"
-                app:scrollToLast="@{true}"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                tools:listitem="@layout/item_media_preview"/>
+                    <TextView
+                        android:id="@+id/post_text_count_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:afterTextChanged="@{(text) -> countSep.setVisibility(text.toString().length > 0 ? View.VISIBLE : View.GONE)}"
+                        android:layout_marginEnd="24dp"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/md_grey_300"/>
+                    <View
+                        android:id="@+id/space_filler"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/media_preview_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:adapter="@{adapter}"
+                        app:dataSet="@{viewModel.mediaModelsLive}"
+                        app:scrollToLast="@{true}"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/item_media_preview"/>
 
-                <ImageView
-                    android:id="@+id/media_picker_iv"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_centerVertical="true"
-                    android:padding="8dp"
-                    android:onClick="@{() -> viewModel.openMediaPicker()}"
-                    android:src="@drawable/ic_action_image"
-                    app:tint="@color/md_amber_650" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/md_grey_300"/>
 
-                <Button
-                    android:id="@+id/post_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:text="@string/post"
-                    android:onClick="@{() -> viewModel.postToFirebaseWorker(postTextEt.getText().toString())}"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@color/md_light_green_500"
-                    app:cornerRadius="10dp"
-                    app:elevation="7dp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
 
-            </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/media_picker_iv"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerVertical="true"
+                            android:padding="8dp"
+                            android:onClick="@{() -> viewModel.openMediaPicker()}"
+                            android:src="@drawable/ic_action_image"
+                            app:tint="@color/md_amber_650" />
+
+                        <Button
+                            android:id="@+id/post_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="10dp"
+                            android:text="@string/post"
+                            android:onClick="@{() -> viewModel.postToBackend(postTextEt.getText().toString())}"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/md_light_green_500"
+                            app:cornerRadius="10dp"
+                            app:elevation="7dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
 
