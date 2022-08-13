@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="mediaModel"
+            type="com.dxp.micircle.domain.router.model.MediaModel" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="listener"
+            type="com.dxp.micircle.presentation.base.adapters.ItemListener" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="20dp"
+        android:onClick="@{() -> listener.onItemSelected(position, mediaModel)}">
+
+        <ImageView
+            android:id="@+id/preview_image_tv"
+            style="@style/ShapeCircle"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{mediaModel.url}"
+            app:placeholder="@{com.dxp.micircle.R.drawable.ic_image_placeholder}"
+            android:contentDescription="@string/new_post_media_preview" />
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

@@ -1,47 +1,66 @@
 package com.dxp.micircle.domain.usecase
 
+import com.dxp.micircle.Config
+import com.dxp.micircle.data.router.CoroutineDispatcherProvider
+import com.dxp.micircle.domain.router.model.UserModel
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
-import io.reactivex.Single
-import io.reactivex.subjects.SingleSubject
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 
-class FirebaseRegisterUser @Inject constructor(private val firebaseAuth: FirebaseAuth) {
+@Suppress("BlockingMethodInNonBlockingContext")
+class FirebaseRegisterUser @Inject constructor(private val firebaseAuth: FirebaseAuth,
+                                               private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
 
-    fun invoke(fName: String, lName: String, username: String, password: String) : Single<Boolean> {
+    @Inject
+    lateinit var firebaseDatabase: FirebaseDatabase
 
-        val subject = SingleSubject.create<Boolean>()
-        return subject.doOnSubscribe {
+    fun execute(fName: String, lName: String, username: String, password: String) = flow {
 
-            firebaseAuth.createUserWithEmailAndPassword(username, password)
-                .addOnCompleteListener{ task ->
+        try {
 
-                    if (task.isSuccessful) {
+            val task = firebaseAuth.createUserWithEmailAndPassword(username, password)
+            Tasks.await(task)
 
-                        val profUpdateReq = UserProfileChangeRequest.Builder().setDisplayName("$fName $lName").build()
-                        firebaseAuth.currentUser?.let {
+            if (task.isSuccessful) {
 
-                            it.updateProfile(profUpdateReq)
-                                .addOnCompleteListener { updateResponse ->
+                firebaseAuth.currentUser?.let {
 
-                                    if (updateResponse.isSuccessful) {
+                    val postRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
+                        .child(it.uid)
 
-                                        subject.onSuccess(true)
-                                    }
-                                    else {
+                    val userModel = UserModel(it.uid,
+                        System.currentTimeMillis(),
+                        fName,
+                        lName,
+                        null)
 
-                                        task.exception?.let { it-> subject.onError(it) } ?: subject.onSuccess(false)
-                                        it.delete()
-                                    }
-                                }
-                        }
+                    val postTask = postRef.setValue(userModel)
+                    Tasks.await(postTask)
+
+                    if (postTask.isSuccessful) {
+
+                        emit(false)
                     }
                     else {
 
-                        task.exception?.let { it -> subject.onError(it) } ?: subject.onSuccess(false)
+                        it.delete()
+                        throw postTask.exception ?: Exception("-1")
                     }
-                }
+                } ?: throw Exception("-1")
+            }
+            else {
+
+                throw task.exception ?: Exception("-1")
+            }
+        }
+        catch (e: Exception) {
+
+            throw e
         }
     }
+    .flowOn(coroutineDispatcherProvider.IO())
 }

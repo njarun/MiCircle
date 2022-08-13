@@ -11,7 +11,7 @@
     <color name="window_bg_color">#F5F5F5</color>
 
     <color name="menu_bg_color">#1d1d25</color>
-
+    <color name="separator_color">@color/md_grey_300</color>
     <color name="ic_launcher_background">@color/colorAccentDark</color>
 
     <color name="white">@android:color/white</color>

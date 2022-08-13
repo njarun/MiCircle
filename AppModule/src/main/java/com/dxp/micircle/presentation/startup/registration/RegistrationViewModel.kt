@@ -1,11 +1,18 @@
 package com.dxp.micircle.presentation.startup.registration
 
+import androidx.lifecycle.viewModelScope
 import com.dxp.micircle.R
 import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.usecase.FirebaseRegisterUser
-import com.dxp.micircle.presentation.base.*
+import com.dxp.micircle.presentation.base.BaseViewModel
+import com.dxp.micircle.presentation.base.OnException
+import com.dxp.micircle.presentation.base.OnSuccess
+import com.dxp.micircle.presentation.base.ShowToast
 import com.dxp.micircle.utils.Validator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -47,22 +54,33 @@ class RegistrationViewModel @Inject constructor(private val userRegistration: Fi
             }
             else {
 
-                _viewRefreshState.postValue(true)
+                viewModelScope.launch {
 
-                subscription {
+                    try {
 
-                    userRegistration.invoke(fName, lName, username, password)
-                        .subscribeOn(schedulers.ioScheduler)
-                        .observeOn(schedulers.uiScheduler)
-                        .subscribe({ result ->
+                        userRegistration.execute(fName, lName, username, password).onStart {
 
-                            _viewRefreshState.postValue(false)
-                            emitAction(if (result) OnSuccess else OnFailed)
-                        }, {
+                            _viewRefreshState.postValue(true)
+                        }
+                        .catch {
 
                             _viewRefreshState.postValue(false)
                             emitAction(OnException(it))
-                        })
+                        }
+                        .collect {
+
+                            _viewRefreshState.postValue(it)
+                            emitAction(OnSuccess)
+                        }
+                    }
+                    catch (e: Exception) {
+
+                        e.printStackTrace()
+
+                        _viewRefreshState.postValue(false)
+
+                        emitAction(OnException(e))
+                    }
                 }
             }
         }
