@@ -1,14 +1,15 @@
 package com.dxp.micircle.presentation.new_post
 
 import android.app.Activity
+import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.viewbinding.ViewBinding
 import com.dxp.micircle.R
 import com.dxp.micircle.databinding.ActivityNewPostBinding
-import com.dxp.micircle.presentation.base.BaseActivity
-import com.dxp.micircle.presentation.base.Interactor
-import com.dxp.micircle.presentation.base.OpenMediaPicker
+import com.dxp.micircle.presentation.base.*
+import com.dxp.micircle.presentation.image_viewer.ImageViewerActivity
+import com.dxp.micircle.utils.Constants
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
@@ -42,6 +43,13 @@ class NewPostActivity : BaseActivity<ActivityNewPostBinding, NewPostViewModel>()
 
                 openMediaPicker()
                 return true
+            }
+
+            is OpenMediaViewer -> {
+
+                val bundle = Bundle()
+                bundle.putString(Constants.EXTRA_IMAGE_PATH, interaction.mediaPath)
+                return super.handleVMInteractions(OpenNextScreen(ImageViewerActivity::class.java, bundle))
             }
         }
 

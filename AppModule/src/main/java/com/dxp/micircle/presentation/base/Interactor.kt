@@ -1,6 +1,7 @@
 package com.dxp.micircle.presentation.base
 
 import android.content.Intent
+import android.os.Bundle
 import com.dxp.micircle.R
 import com.dxp.micircle.utils.ExceptionParser
 import com.dxp.micircle.utils.Utility
@@ -17,8 +18,9 @@ object OpenMediaPicker : Interactor
 object OnSuccess : Interactor
 object OnFailed : Interactor
 class ShowToast(val message: Any): Interactor
-class OpenNextScreen(val clazz: Class<*>): Interactor
-class FinishAndOpenNextScreen(val clazz: Class<*>, val finishAll: Boolean): Interactor
+class OpenNextScreen(val clazz: Class<*>, val bundle: Bundle? = null): Interactor
+class FinishAndOpenNextScreen(val clazz: Class<*>, val finishAll: Boolean, val bundle: Bundle? = null): Interactor
+class OpenMediaViewer(val mediaPath: String?): Interactor
 class OnException(val t: Throwable): Interactor
 
 fun handleVMInteractions(activity: BaseActivity<*, *>, interaction: Interactor): Boolean {
@@ -27,7 +29,12 @@ fun handleVMInteractions(activity: BaseActivity<*, *>, interaction: Interactor):
 
         is OpenNextScreen -> {
 
-            activity.startActivity(Intent(activity, interaction.clazz))
+            val intent = Intent(activity, interaction.clazz)
+            interaction.bundle?.let {
+                intent.putExtras(it)
+            }
+
+            activity.startActivity(intent)
         }
 
         is FinishAndOpenNextScreen -> {
@@ -36,7 +43,12 @@ fun handleVMInteractions(activity: BaseActivity<*, *>, interaction: Interactor):
                 activity.finishAffinity()
             else activity.finish()
 
-            activity.startActivity(Intent(activity, interaction.clazz))
+            val intent = Intent(activity, interaction.clazz)
+            interaction.bundle?.let {
+                intent.putExtras(it)
+            }
+
+            activity.startActivity(intent)
         }
 
         is ShowToast -> {

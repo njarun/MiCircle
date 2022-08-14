@@ -147,7 +147,8 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
     }
 
     override fun onItemSelected(position: Int, itemObj: BaseListItem) { //From Media Preview List
-        emitAction(ShowToast(R.string.out_of_scope_functionalities))
+
+        emitAction(OpenMediaViewer((itemObj as MediaModel).url))
     }
 
     override fun onItemRemoved(position: Int, itemObj: BaseListItem) { //From Media Preview List

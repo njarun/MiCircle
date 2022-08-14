@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="imagePath"
+            type="String" />
+
+        <variable
+            name="viewModel"
+            type="com.dxp.micircle.presentation.base.BaseViewModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/blackTrans50"
+        tools:context=".presentation.image_viewer.ImageViewerActivity">
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_image_placeholder"
+            app:imageUrl="@{imagePath}"
+            app:dontScale="@{true}"
+            app:placeholder="@{com.dxp.micircle.R.drawable.ic_image_placeholder}"
+            android:contentDescription="@string/splash_image"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            app:cardBackgroundColor="@color/blackTrans50"
+            app:cardElevation="0dp"
+            app:contentPaddingLeft="20dp"
+            app:contentPaddingTop="10dp"
+            app:contentPaddingRight="20dp"
+            app:contentPaddingBottom="10dp"
+            app:cardCornerRadius="15dp">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:tint="@color/white"
+                android:contentDescription="@string/go_back_to_previous_page"
+                android:onClick="@{() -> viewModel.onBackPressed()}"
+                android:src="@drawable/ic_action_back_arrow" />
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+</layout>

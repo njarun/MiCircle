@@ -162,6 +162,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.3"
     implementation "androidx.room:room-rxjava2:2.4.3"
 
+    //Photo viewer
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
     //Worker manager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
     implementation "androidx.work:work-rxjava2:2.7.1"

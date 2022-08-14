@@ -10,6 +10,7 @@ import com.dxp.micircle.presentation.base.BaseActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 object Utility {
 
     fun makeActivityFullScreen(activity: BaseActivity<*, *>) {

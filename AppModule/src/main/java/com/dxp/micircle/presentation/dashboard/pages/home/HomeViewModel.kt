@@ -8,10 +8,7 @@ import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.router.model.FeedMediaModel
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.usecase.FirebaseGetFeeds
-import com.dxp.micircle.presentation.base.BaseViewModel
-import com.dxp.micircle.presentation.base.OnException
-import com.dxp.micircle.presentation.base.OnNewPost
-import com.dxp.micircle.presentation.base.ShowToast
+import com.dxp.micircle.presentation.base.*
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -198,6 +195,8 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
     override fun onMediaSelected(mediaPos: Int, mediaObj: BaseListItem, postPos: Int, postObj: BaseListItem) {
 
         Timber.d("onMediaSelected $mediaPos ${(mediaObj as FeedMediaModel).url} $mediaPos ${(postObj as FeedModel).userName}")
+
+        emitAction(OpenMediaViewer(mediaObj.url))
     }
 
     override fun onFeedScrolledToEnd(postEndPos: Int) {

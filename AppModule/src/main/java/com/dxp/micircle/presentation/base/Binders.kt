@@ -88,9 +88,19 @@ fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdap
 }
 
 
-@BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
-fun ImageView.loadImageFromUrlOrPlaceholder(url: String?, placeholder: Int?) {
+@BindingAdapter(value = ["imageUrl", "dontScale", "placeholder"], requireAll = false)
+fun ImageView.loadImageFromUrlOrPlaceholder(url: String?, dontScale: Boolean?, placeholder: Int?) {
 
-    url?.let { Glide.with(context).load(url).centerCrop().into(this) } ?: placeholder?.let { Glide.with(context)
+    url?.let {
+
+        if(dontScale != null && dontScale) {
+
+            Glide.with(context).load(url).into(this)
+        }
+        else {
+
+            Glide.with(context).load(url).centerCrop().into(this)
+        }
+    } ?: placeholder?.let { Glide.with(context)
         .load(placeholder).into(this) }
 }

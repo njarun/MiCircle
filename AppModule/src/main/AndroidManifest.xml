@@ -54,6 +54,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".presentation.image_viewer.ImageViewerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name="com.lassi.presentation.mediadirectory.LassiMediaPickerActivity"
             android:exported="true"
             android:launchMode="singleTask"
