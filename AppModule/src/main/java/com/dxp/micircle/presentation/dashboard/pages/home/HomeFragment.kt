@@ -30,6 +30,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun handleVMInteractions(interaction: Interactor): Boolean {
 
         when(interaction) {
+
             is OnNewPost -> {
                 return super.handleVMInteractions(OpenNextScreen(NewPostActivity::class.java))
             }

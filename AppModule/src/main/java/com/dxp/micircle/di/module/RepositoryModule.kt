@@ -5,9 +5,11 @@ import com.dxp.micircle.data.database.dao.PostDao
 import com.dxp.micircle.data.router.repository.FeedsRepositoryImpl
 import com.dxp.micircle.data.router.repository.MiMediaRepositoryImpl
 import com.dxp.micircle.data.router.repository.PostsRepositoryImpl
+import com.dxp.micircle.data.router.repository.UsersRepositoryImpl
 import com.dxp.micircle.domain.router.repository.FeedsRepository
 import com.dxp.micircle.domain.router.repository.MiMediaRepository
 import com.dxp.micircle.domain.router.repository.PostsRepository
+import com.dxp.micircle.domain.router.repository.UsersRepository
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Binds
 import dagger.Module
@@ -28,6 +30,11 @@ object RepositoryModule {
     @Provides
     fun provideFeedsRepository(firebaseDatabase: FirebaseDatabase): FeedsRepository {
         return FeedsRepositoryImpl(firebaseDatabase)
+    }
+
+    @Provides
+    fun provideUsersRepository(firebaseDatabase: FirebaseDatabase): UsersRepository {
+        return UsersRepositoryImpl(firebaseDatabase)
     }
 }
 

@@ -25,10 +25,6 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
     private val _feedListLive = MutableLiveData<ArrayList<FeedModel>>(ArrayList())
     val feedListLive: LiveData<ArrayList<FeedModel>> = _feedListLive
 
-    fun createNewPost() {
-        emitAction(OnNewPost)
-    }
-
     init {
 
         watchNewPost()
@@ -38,6 +34,10 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
 
     fun getCurrentUserId() :String? {
         return firebaseAuth.currentUser?.uid
+    }
+
+    fun createNewPost() {
+        emitAction(OnNewPost)
     }
 
     private fun watchNewPost() {

@@ -66,6 +66,7 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="logout">Log out</string>
+    <string name="edit">Edit</string>
 
     <string name="new_post">New Post</string>
     <string name="share_your_thoughts">Share your thoughts…</string>
@@ -77,5 +78,7 @@
     <string name="post_upload">Post Upload</string>
     <string name="posting_to_your_timeline">Posting to your timeline…</string>
     <string name="open_posts_for_user">Open posts for user</string>
+
+    <string name="joined">Joined</string>
 
 </resources>

@@ -7,47 +7,145 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="com.dxp.micircle.utils.Utility" />
+
+        <variable
+            name="selfId"
+            type="String" />
 
         <variable
             name="viewModel"
             type="com.dxp.micircle.presentation.dashboard.pages.profile.ProfileViewModel" />
 
+        <variable
+            name="adapter"
+            type="com.dxp.micircle.presentation.dashboard.pages.home.FeedListAdapter" />
+
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:animateLayoutChanges="true">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/heading_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/logout_btn"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/preview_image_tv"
+                style="@style/ShapeCircle"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@mipmap/ic_launcher_round"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.userModelLive != null ? viewModel.userModelLive.profileImageUrl : ``}"
+                app:placeholder="@{com.dxp.micircle.R.mipmap.ic_launcher_round}"
+                android:contentDescription="@string/new_post_media_preview" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="30dp"
+                android:layout_marginStart="15dp"
                 android:minHeight="60dp"
-                android:onClick="@{() -> viewModel.logout()}"
-                android:text="@string/logout"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/md_red_700"
-                app:cornerRadius="10dp"
-                app:elevation="5dp" />
+                android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="@{viewModel.viewRefreshState}"/>
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@{viewModel.userModelLive != null ? (viewModel.userModelLive.fName + ` ` + viewModel.userModelLive.lName) : ``}"
+                    android:textColor="?attr/text_color_inverted"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/post_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textSize="12sp"
+                    android:text="@{@string/joined + `: ` + (viewModel.userModelLive != null ? Utility.getDatePrettied(viewModel.userModelLive.created) : `N. A`)}"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="?attr/text_color_inverted_light"/>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.userModelLive.userId != null &amp;&amp; selfId.equals(viewModel.userModelLive.userId)}"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/edit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        app:contentPadding="0dp"
+                        android:layout_marginEnd="10dp"
+                        android:onClick="@{() -> viewModel.editProfile()}"
+                        android:text="@string/edit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/md_light_green_500"
+                        app:cornerRadius="10dp"
+                        app:elevation="5dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/logout_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        app:contentPadding="0dp"
+                        android:onClick="@{() -> viewModel.logout()}"
+                        android:text="@string/logout"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/md_red_700"
+                        app:cornerRadius="10dp"
+                        app:elevation="5dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/separator_color"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:onRefreshListener="@{() -> viewModel.onRefresh()}"
+            app:setRefreshing="@{viewModel.viewRefreshState}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feed_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:adapter="@{adapter}"
+                app:dataSet="@{viewModel.feedListLive}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:scrollToLast="@{false}"
+                tools:listitem="@layout/item_feed_list" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
 
 </layout>
