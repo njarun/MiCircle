@@ -177,11 +177,15 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
     override fun onPostLike(postPos: Int, postObj: BaseListItem) {
 
         Timber.d("Like post ${postPos} ${(postObj as FeedModel).userName}")
+
+        emitAction(ShowToast(R.string.out_of_scope_functionalities))
     }
 
     override fun onPostComment(postPos: Int, postObj: BaseListItem) {
 
         Timber.d("Comment post ${postPos} ${(postObj as FeedModel).userName}")
+
+        emitAction(ShowToast(R.string.out_of_scope_functionalities))
     }
 
     override fun onPostDelete(postPos: Int, postObj: BaseListItem) {

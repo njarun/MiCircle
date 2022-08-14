@@ -30,7 +30,7 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
 
             val task = postRef.orderByChild("timestamp")
                 .startAfter(-startAfter.toDouble())
-                .limitToFirst(4)
+                .limitToFirst(Config.FEED_PAGE_LIMIT)
                 .get()
 
             Tasks.await(task)

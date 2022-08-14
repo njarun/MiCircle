@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import com.dxp.micircle.presentation.base.adapters.recyclerview.BaseAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @BindingAdapter("android:visibility")
 fun View.visibility(state: Boolean) {
@@ -27,8 +28,8 @@ fun View.showToast(message: String?) {
     }
 }
 
-@BindingAdapter(value = ["adapter", "dataSet", "scrollToLast"], requireAll = true) @Suppress("UNCHECKED_CAST")
-fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdapter<*, *, *>?, recyclerviewDataset: List<BaseListItem>?, scrollToLast: Boolean) {
+@BindingAdapter(value = ["adapter", "dataSet", "scrollToLast", "associatedFab"], requireAll = false) @Suppress("UNCHECKED_CAST")
+fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdapter<*, *, *>?, recyclerviewDataset: List<BaseListItem>?, scrollToLast: Boolean, fab: FloatingActionButton?) {
 
     var adapter = recyclerviewAdapter as BaseAdapter<ViewDataBinding, BaseListItem, Any>?
     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
@@ -50,6 +51,22 @@ fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdap
 
                     if (lastVisiblePosition == itemCount - 1) {
                         it.onScrolledToEnd(itemCount - 1)
+                    }
+
+                    fab?.let {
+
+                        if (dy > 0) {
+
+                            if (fab.isShown) {
+                                fab.hide()
+                            }
+                        }
+                        else if (dy < 0) {
+
+                            if (!fab.isShown) {
+                                fab.show()
+                            }
+                        }
                     }
                 }
             })

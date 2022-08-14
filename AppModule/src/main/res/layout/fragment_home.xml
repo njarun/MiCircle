@@ -38,6 +38,7 @@
                 app:adapter="@{adapter}"
                 app:dataSet="@{viewModel.feedListLive}"
                 app:scrollToLast="@{false}"
+                app:associatedFab="@{fabAddNewPost}"
                 tools:listitem="@layout/item_feed_list"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
