@@ -2,19 +2,28 @@ package com.dxp.micircle.presentation.dashboard.pages.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.dxp.micircle.R
 import com.dxp.micircle.domain.helpers.AppSchedulers
+import com.dxp.micircle.domain.router.model.FeedMediaModel
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.usecase.FirebaseGetFeeds
 import com.dxp.micircle.presentation.base.BaseViewModel
 import com.dxp.micircle.presentation.base.OnException
 import com.dxp.micircle.presentation.base.OnNewPost
+import com.dxp.micircle.presentation.base.ShowToast
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel @Suppress("UNCHECKED_CAST")
-class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds,
-            private var schedulers: AppSchedulers) : BaseViewModel(), FeedListener {
+class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
+    private val feeds: FirebaseGetFeeds, private var schedulers: AppSchedulers) : BaseViewModel(), FeedListener {
 
     private val _feedListLive = MutableLiveData<ArrayList<FeedModel>>(ArrayList())
     val feedListLive: LiveData<ArrayList<FeedModel>> = _feedListLive
@@ -28,6 +37,10 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds,
         watchNewPost()
 
         fetchData(-1)
+    }
+
+    fun getCurrentUserId() :String? {
+        return firebaseAuth.currentUser?.uid
     }
 
     private fun watchNewPost() {
@@ -64,7 +77,7 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds,
 
             subscription {
 
-                feeds(from)
+                feeds.getAllFeeds(from)
                     .subscribeOn(schedulers.ioScheduler)
                     .observeOn(schedulers.uiScheduler)
                     .subscribe({ result ->
@@ -102,6 +115,54 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds,
         fetchData(-1)
     }
 
+    private fun deleteFeed(feedModel: FeedModel) {
+
+        if(viewRefreshState.value == true) {
+
+            emitAction(ShowToast(R.string.please_wait))
+            return
+        }
+
+        viewModelScope.launch {
+
+            try {
+
+                feeds.deleteFeed(feedModel).onStart {
+
+                    _viewRefreshState.postValue(true)
+                }
+                .catch {
+
+                    _viewRefreshState.postValue(false)
+                    emitAction(OnException(it))
+                }
+                .collect {
+
+                    _viewRefreshState.postValue(!it)
+
+                    if(it) {
+
+                        _feedListLive.value?.let {
+
+                            val feedList: ArrayList<FeedModel> = it
+                            feedList.remove(feedModel)
+
+                            _feedListLive.value = feedList
+                        }
+                    }
+                }
+            }
+            catch (e: Exception) {
+
+                e.printStackTrace()
+
+                _viewRefreshState.postValue(false)
+
+                emitAction(OnException(e))
+            }
+        }
+    }
+
     override fun onCleared() {
 
         super.onCleared()
@@ -110,22 +171,29 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds,
 
     override fun onPostSelected(postPos: Int, postObj: BaseListItem) {
 
+        Timber.d("Selected post ${postPos} ${(postObj as FeedModel).userName}")
     }
 
     override fun onPostLike(postPos: Int, postObj: BaseListItem) {
 
+        Timber.d("Like post ${postPos} ${(postObj as FeedModel).userName}")
     }
 
     override fun onPostComment(postPos: Int, postObj: BaseListItem) {
 
+        Timber.d("Comment post ${postPos} ${(postObj as FeedModel).userName}")
     }
 
     override fun onPostDelete(postPos: Int, postObj: BaseListItem) {
 
+        Timber.d("Delete post ${postPos} ${(postObj as FeedModel).userName}")
+
+        deleteFeed(postObj)
     }
 
-    override fun onMediaSelected(postPos: Int, postObj: BaseListItem, mediaPos: Int, mediaObj: BaseListItem) {
+    override fun onMediaSelected(mediaPos: Int, mediaObj: BaseListItem, postPos: Int, postObj: BaseListItem) {
 
+        Timber.d("onMediaSelected $mediaPos ${(mediaObj as FeedMediaModel).url} $mediaPos ${(postObj as FeedModel).userName}")
     }
 
     override fun onFeedScrolledToEnd(postEndPos: Int) {

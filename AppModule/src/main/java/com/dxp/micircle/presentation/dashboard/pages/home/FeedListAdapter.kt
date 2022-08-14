@@ -5,7 +5,7 @@ import com.dxp.micircle.databinding.ItemFeedListBinding
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.presentation.base.adapters.recyclerview.BaseAdapter
 
-class FeedListAdapter(list: List<FeedModel>, private val itemListener: FeedListener):
+class FeedListAdapter(list: List<FeedModel>, private val userId: String?, private val itemListener: FeedListener):
     BaseAdapter<ItemFeedListBinding, FeedModel, Any>(list, itemListener) {
 
     override val layoutId: Int = R.layout.item_feed_list
@@ -14,6 +14,7 @@ class FeedListAdapter(list: List<FeedModel>, private val itemListener: FeedListe
 
         binding.apply {
 
+            selfId = userId ?: ""
             feedModel = item
             position = itemPos
             listener = itemListener

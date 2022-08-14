@@ -86,4 +86,12 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
 
         return feedModel
     }
+
+    override suspend fun deleteFeed(feedModel: FeedModel): Boolean {
+
+        val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
+        val task = postRef.child(feedModel.postId!!).removeValue()
+        Tasks.await(task)
+        return true
+    }
 }

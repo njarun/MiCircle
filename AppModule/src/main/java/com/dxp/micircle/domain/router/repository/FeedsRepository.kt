@@ -9,4 +9,6 @@ interface FeedsRepository {
     fun getFeeds(from: Long): Single<ArrayList<FeedModel>>
 
     suspend fun processNewPostToFeed(newPost: PostModel): FeedModel
+
+    suspend fun deleteFeed(feedModel: FeedModel): Boolean
 }

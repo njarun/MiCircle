@@ -10,12 +10,14 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers, private val feedsRepository: FeedsRepository,
-                                           private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
+class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
+   private val feedsRepository: FeedsRepository, private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
 
     @Inject
     lateinit var firebaseDatabase: FirebaseDatabase
@@ -24,8 +26,6 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers, privat
     lateinit var newPostObserver: NewPostObserver
 
     private val subscriptions = CompositeDisposable()
-
-    operator fun invoke(from: Long) = feedsRepository.getFeeds(from)
 
     fun watchNewPost() : Observable<FeedModel> {
 
@@ -42,6 +42,14 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers, privat
             })
         }
     }
+
+    fun getAllFeeds(from: Long) = feedsRepository.getFeeds(from)
+
+    fun deleteFeed(feedModel: FeedModel) = flow {
+
+        emit(feedsRepository.deleteFeed(feedModel))
+    }
+    .flowOn(coroutineDispatcherProvider.IO())
 
     fun onCleared() {
 
