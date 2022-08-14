@@ -9,7 +9,7 @@ import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.dxp.micircle.domain.worker.PostUploadWorker
 import com.dxp.micircle.utils.Constants
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class FirebasePostToBackend @Inject constructor(private val workManager: WorkMan
     private val postsRepository: PostsRepository, private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
 
     @Inject
-    lateinit var firebaseDatabase: FirebaseDatabase
+    lateinit var FirebaseFirestore: FirebaseFirestore
 
     @Inject
     lateinit var newPostObserver: NewPostObserver
@@ -30,11 +30,11 @@ class FirebasePostToBackend @Inject constructor(private val workManager: WorkMan
 
             if(postModel.mediaList.isNullOrEmpty()) {
 
-                val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
-                    .child(postModel.postId)
+                val postRef = FirebaseFirestore.collection(Config.FBD_POSTS_PATH)
+                    .document(postModel.postId)
 
-                postModel.timestamp = postModel.timestamp*-1
-                val postTask = postRef.setValue(postModel)
+                postModel.timestamp = postModel.timestamp
+                val postTask = postRef.set(postModel)
                 Tasks.await(postTask)
 
                 if(!postTask.isSuccessful)

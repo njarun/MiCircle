@@ -1,8 +1,8 @@
 package com.dxp.micircle.di.module
 
-import com.dxp.micircle.Config
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
@@ -20,12 +20,7 @@ object FirebaseModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseDatabase() : FirebaseDatabase {
-
-        val database = FirebaseDatabase.getInstance(Config.FBD_DATABASE_PATH)
-        database.setPersistenceEnabled(true)
-        return database
-    }
+    fun provideFirebaseFirestore() = Firebase.firestore
 
     @Singleton
     @Provides

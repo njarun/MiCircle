@@ -24,7 +24,7 @@ import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.dxp.micircle.utils.Constants
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.internal.api.FirebaseNoSignedInUserException
 import com.google.firebase.storage.FirebaseStorage
 import dagger.assisted.Assisted
@@ -36,7 +36,7 @@ import java.util.*
 @HiltWorker @Suppress("BlockingMethodInNonBlockingContext")
 class PostUploadWorker @AssistedInject constructor(@Assisted val context: Context,
 @Assisted val params: WorkerParameters, private val firebaseAuth: FirebaseAuth,
-private val postsRepository: PostsRepository, private val firebaseDatabase: FirebaseDatabase,
+private val postsRepository: PostsRepository, private val FirebaseFirestore: FirebaseFirestore,
 private val firebaseStorage: FirebaseStorage, private val newPostObserver: NewPostObserver) : CoroutineWorker(context, params) {
 
     private val notiChannelId = Constants.NEW_POST_WORKER_NOTIFICATION_CHANNEL_ID
@@ -60,8 +60,8 @@ private val firebaseStorage: FirebaseStorage, private val newPostObserver: NewPo
 
                     updateProgress(0, true)
 
-                    val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
-                        .child(postId)
+                    val postRef = FirebaseFirestore.collection(Config.FBD_POSTS_PATH)
+                        .document(postId)
 
                     val postMediaRef = firebaseStorage.reference
                         .child(postModel.userId)
@@ -114,8 +114,8 @@ private val firebaseStorage: FirebaseStorage, private val newPostObserver: NewPo
 
                         updateProgress(100, true)
 
-                        postModel.timestamp = postModel.timestamp*-1
-                        val postTask = postRef.setValue(postModel)
+                        postModel.timestamp = postModel.timestamp
+                        val postTask = postRef.set(postModel)
                         Tasks.await(postTask)
 
                         if(!postTask.isSuccessful)

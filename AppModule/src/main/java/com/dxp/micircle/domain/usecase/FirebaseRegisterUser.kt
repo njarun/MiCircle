@@ -3,14 +3,14 @@ package com.dxp.micircle.domain.usecase
 import com.dxp.micircle.Config
 import com.dxp.micircle.domain.router.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
 import javax.inject.Inject
 
 
 class FirebaseRegisterUser @Inject constructor(private val firebaseAuth: FirebaseAuth,
-                                        private var firebaseDatabase: FirebaseDatabase) {
+                                        private var FirebaseFirestore: FirebaseFirestore) {
 
     fun invoke(fName: String, lName: String, username: String, password: String) : Single<Boolean> {
 
@@ -24,8 +24,8 @@ class FirebaseRegisterUser @Inject constructor(private val firebaseAuth: Firebas
 
                         firebaseAuth.currentUser?.let {
 
-                            val postRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
-                                .child(it.uid)
+                            val postRef = FirebaseFirestore.collection(Config.FBD_USERS_PATH)
+                                .document(it.uid)
 
                             val userModel = UserModel(it.uid,
                                 System.currentTimeMillis(),
@@ -33,7 +33,7 @@ class FirebaseRegisterUser @Inject constructor(private val firebaseAuth: Firebas
                                 lName,
                                 null)
 
-                            postRef.setValue(userModel).addOnCompleteListener { updateResponse ->
+                            postRef.set(userModel).addOnCompleteListener { updateResponse ->
 
                                 if (updateResponse.isSuccessful) {
 

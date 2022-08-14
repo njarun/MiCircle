@@ -7,14 +7,14 @@ import com.dxp.micircle.domain.router.model.PostModel
 import com.dxp.micircle.domain.router.model.UserModel
 import com.dxp.micircle.domain.router.repository.FeedsRepository
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : FeedsRepository {
+class FeedsRepositoryImpl @Inject constructor(private val FirebaseFirestore: FirebaseFirestore) : FeedsRepository {
 
     override fun getFeeds(from: Long, uid: String?): Single<ArrayList<FeedModel>> {
 
@@ -25,34 +25,46 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
                 System.currentTimeMillis()
             else from
 
-            val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
-            val userRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
+            val postRef = FirebaseFirestore.collection(Config.FBD_POSTS_PATH)
+            val userRef = FirebaseFirestore.collection(Config.FBD_USERS_PATH)
 
-            val query = postRef.orderByChild("timestamp")
-                .startAfter(-startAfter.toDouble())
-                .limitToFirst(Config.FEED_PAGE_LIMIT)
+            val query: Query //@Todo combine query. When combined the result order was chaos, check this -- nj
+
+            if(uid == null) {
+
+                query = postRef.orderBy("timestamp", Query.Direction.DESCENDING)
+                    .startAfter(startAfter.toDouble())
+                    .limit(Config.FEED_PAGE_LIMIT)
+            }
+            else {
+
+                query = postRef.whereEqualTo("userId", uid).orderBy("timestamp", Query.Direction.DESCENDING)
+                    .startAfter(startAfter.toDouble())
+                    .limit(Config.FEED_PAGE_LIMIT)
+            }
 
             val task = query.get()
 
             Tasks.await(task)
 
-            val feedList: ArrayList<FeedModel> = ArrayList()
             val userMap: HashMap<String, Pair<String, String?>> = HashMap()
+
+            var feedList: ArrayList<FeedModel> = ArrayList()
 
             if(task.isSuccessful) {
 
-                task.result.children.forEach { post ->
+                feedList = task.result.toObjects(FeedModel::class.java) as ArrayList<FeedModel>
 
-                    val feed: FeedModel = post.getValue(FeedModel::class.java)!!
+                feedList.forEach { feed ->
 
                     var nameAndUrlPair: Pair<String, String?>? = userMap[feed.userId!!]
 
                     if(nameAndUrlPair == null) {
 
-                        val userTask = userRef.child(feed.userId!!).get()
+                        val userTask = userRef.document(feed.userId!!).get()
                         Tasks.await(userTask)
                         if (userTask.isSuccessful) {
-                            val user: UserModel = userTask.result.getValue(UserModel::class.java)!!
+                            val user: UserModel = userTask.result.toObject(UserModel::class.java)!!
                             nameAndUrlPair = Pair("${user.fName} ${user.lName}", user.profileImageUrl)
                             userMap.put(feed.userId!!, nameAndUrlPair)
                         }
@@ -60,8 +72,6 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
 
                     feed.userName = nameAndUrlPair?.first
                     feed.imageUrl = nameAndUrlPair?.second
-                    feed.timestamp = feed.timestamp.absoluteValue
-                    feedList.add(feed)
                 }
             }
 
@@ -72,14 +82,13 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
     override suspend fun processNewPostToFeed(newPost: PostModel): FeedModel {
 
         val feedModel = newPost.toFeedModel()
-        feedModel.timestamp = feedModel.timestamp.absoluteValue
-        val userRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
-        val userTask = userRef.child(feedModel.userId!!).get()
+        val userRef = FirebaseFirestore.collection(Config.FBD_USERS_PATH)
+        val userTask = userRef.document(feedModel.userId!!).get()
         Tasks.await(userTask)
 
         if (userTask.isSuccessful) {
 
-            val user: UserModel = userTask.result.getValue(UserModel::class.java)!!
+            val user: UserModel = userTask.result.toObject(UserModel::class.java)!!
             feedModel.userName = "${user.fName} ${user.lName}"
             feedModel.imageUrl = user.profileImageUrl
         }
@@ -90,8 +99,8 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
 
     override suspend fun deleteFeed(feedModel: FeedModel): Boolean {
 
-        val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
-        val task = postRef.child(feedModel.postId!!).removeValue()
+        val postRef = FirebaseFirestore.collection(Config.FBD_POSTS_PATH)
+        val task = postRef.document(feedModel.postId!!).delete()
         Tasks.await(task)
         return true
     }

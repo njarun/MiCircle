@@ -5,7 +5,6 @@ import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.helpers.NewPostObserver
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.repository.FeedsRepository
-import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
@@ -18,9 +17,6 @@ import javax.inject.Inject
 @Suppress("BlockingMethodInNonBlockingContext")
 class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
    private val feedsRepository: FeedsRepository, private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
-
-    @Inject
-    lateinit var firebaseDatabase: FirebaseDatabase
 
     @Inject
     lateinit var newPostObserver: NewPostObserver

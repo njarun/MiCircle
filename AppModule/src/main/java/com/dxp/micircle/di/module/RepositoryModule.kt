@@ -10,7 +10,7 @@ import com.dxp.micircle.domain.router.repository.FeedsRepository
 import com.dxp.micircle.domain.router.repository.MiMediaRepository
 import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.dxp.micircle.domain.router.repository.UsersRepository
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -28,13 +28,13 @@ object RepositoryModule {
     }
 
     @Provides
-    fun provideFeedsRepository(firebaseDatabase: FirebaseDatabase): FeedsRepository {
-        return FeedsRepositoryImpl(firebaseDatabase)
+    fun provideFeedsRepository(FirebaseFirestore: FirebaseFirestore): FeedsRepository {
+        return FeedsRepositoryImpl(FirebaseFirestore)
     }
 
     @Provides
-    fun provideUsersRepository(firebaseDatabase: FirebaseDatabase): UsersRepository {
-        return UsersRepositoryImpl(firebaseDatabase)
+    fun provideUsersRepository(FirebaseFirestore: FirebaseFirestore): UsersRepository {
+        return UsersRepositoryImpl(FirebaseFirestore)
     }
 }
 
