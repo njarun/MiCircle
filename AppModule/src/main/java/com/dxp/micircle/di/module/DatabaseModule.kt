@@ -5,8 +5,6 @@ import androidx.room.Room
 import com.dxp.micircle.data.database.AppDatabase
 import com.dxp.micircle.data.database.dao.MediaDao
 import com.dxp.micircle.data.database.dao.PostDao
-import com.dxp.micircle.data.router.repository.PostsRepositoryImpl
-import com.dxp.micircle.domain.router.repository.PostsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,10 +34,5 @@ object DatabaseModule {
     @Provides
     fun provideMediaDao(appDatabase: AppDatabase): MediaDao {
         return appDatabase.mediaDao()
-    }
-
-    @Provides
-    fun providePostRepository(postDao: PostDao, mediaDao: MediaDao): PostsRepository {
-        return PostsRepositoryImpl(postDao, mediaDao)
     }
 }

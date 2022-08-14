@@ -10,7 +10,7 @@ import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import com.dxp.micircle.presentation.base.adapters.ItemListener
 
 abstract class BaseAdapter<BINDING : ViewDataBinding, T : BaseListItem,
-        itemListener: ItemListener>(var data: List<T>, val listener: ItemListener):
+        itemListener: Any>(var data: List<T>, val listener: Any):
     RecyclerView.Adapter<BaseViewHolder<BINDING>>() {
 
     @get:LayoutRes
@@ -20,8 +20,9 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : BaseListItem,
 
     override fun getItemCount(): Int = data.size
 
-    fun onScrolledToEnd(pos: Int) {
-        listener.onScrolledToEnd(pos)
+    open fun onScrolledToEnd(pos: Int) {
+        if(listener is ItemListener)
+            listener.onScrolledToEnd(pos)
     }
 
     fun updateData(list: List<T>) {

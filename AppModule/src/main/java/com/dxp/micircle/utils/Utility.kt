@@ -7,6 +7,8 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.dxp.micircle.presentation.base.BaseActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utility {
 
@@ -45,4 +47,8 @@ object Utility {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected
     }
+
+    @JvmStatic
+    fun getDatePrettied(date: Long): String =
+        SimpleDateFormat("dd MMM, yyyy", Locale.getDefault()).format(Date(date))
 }

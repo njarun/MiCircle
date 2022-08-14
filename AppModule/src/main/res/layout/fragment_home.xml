@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.popular.broadcast.presentation.home.HomeFragment">
 
     <data>
@@ -11,13 +12,19 @@
             name="viewModel"
             type="com.dxp.micircle.presentation.dashboard.pages.home.HomeViewModel" />
 
+        <variable
+            name="adapter"
+            type="com.dxp.micircle.presentation.dashboard.pages.home.FeedListAdapter" />
+
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        app:onRefreshListener="@{() -> viewModel.onRefresh()}"
+        app:setRefreshing="@{viewModel.viewRefreshState}">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,6 +34,10 @@
                 android:id="@+id/feed_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:adapter="@{adapter}"
+                app:dataSet="@{viewModel.feedListLive}"
+                app:scrollToLast="@{false}"
                 tools:listitem="@layout/item_feed_list"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

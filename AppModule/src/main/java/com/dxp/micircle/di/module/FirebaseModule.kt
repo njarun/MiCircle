@@ -20,7 +20,12 @@ object FirebaseModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseDatabase() : FirebaseDatabase = FirebaseDatabase.getInstance(Config.FBD_DATABASE_PATH)
+    fun provideFirebaseDatabase() : FirebaseDatabase {
+
+        val database = FirebaseDatabase.getInstance(Config.FBD_DATABASE_PATH)
+        database.setPersistenceEnabled(true)
+        return database
+    }
 
     @Singleton
     @Provides

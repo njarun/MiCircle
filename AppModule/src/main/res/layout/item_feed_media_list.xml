@@ -7,16 +7,24 @@
         <import type="android.view.View" />
 
         <variable
-            name="mediaModel"
-            type="com.dxp.micircle.domain.router.model.MediaModel" />
+            name="feedPosition"
+            type="Integer" />
+
+        <variable
+            name="feedModel"
+            type="com.dxp.micircle.domain.router.model.FeedModel" />
 
         <variable
             name="position"
             type="Integer" />
 
         <variable
+            name="feedMediaModel"
+            type="com.dxp.micircle.domain.router.model.FeedMediaModel" />
+
+        <variable
             name="listener"
-            type="com.dxp.micircle.presentation.base.adapters.ItemListener" />
+            type="com.dxp.micircle.presentation.dashboard.pages.home.FeedListener" />
 
     </data>
 
@@ -27,7 +35,7 @@
         android:layout_marginEnd="10dp"
         app:cardElevation="8dp"
         app:cardCornerRadius="20dp"
-        android:onClick="@{() -> listener.onItemSelected(position, mediaModel)}">
+        android:onClick="@{() -> listener.onMediaSelected(position, feedMediaModel, feedPosition, feedModel)}">
 
         <ImageView
             android:id="@+id/preview_image_tv"
@@ -36,7 +44,7 @@
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:imageUrl="@{mediaModel.url}"
+            app:imageUrl="@{feedMediaModel.url}"
             app:placeholder="@{com.dxp.micircle.R.drawable.ic_image_placeholder}"
             android:contentDescription="@string/new_post_media_preview" />
 

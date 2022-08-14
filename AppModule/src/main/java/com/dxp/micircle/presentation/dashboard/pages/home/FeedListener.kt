@@ -12,7 +12,7 @@ interface FeedListener {
 
     fun onPostDelete(postPos: Int, postObj: BaseListItem)
 
-    fun onMediaSelected(postPos: Int, postObj: BaseListItem, mediaPos: Int, mediaObj: BaseListItem)
+    fun onMediaSelected(mediaPos: Int, mediaObj: BaseListItem, postPos: Int, postObj: BaseListItem)
 
     fun onFeedScrolledToEnd(postEndPos: Int)
 }

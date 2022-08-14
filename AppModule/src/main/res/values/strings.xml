@@ -76,5 +76,6 @@
     <string name="post_failed_try_again">Post failed, Try again!</string>
     <string name="post_upload">Post Upload</string>
     <string name="posting_to_your_timeline">Posting to your timeline…</string>
+    <string name="open_posts_for_user">Open posts for user</string>
 
 </resources>

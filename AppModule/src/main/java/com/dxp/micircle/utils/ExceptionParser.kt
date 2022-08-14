@@ -34,7 +34,12 @@ object ExceptionParser {
 
             return R.string.server_connection_error
         }
-        else return generalError()
+        else {
+
+            exception.printStackTrace()
+
+            return generalError()
+        }
     }
 
     private fun generalError() = R.string.error_general

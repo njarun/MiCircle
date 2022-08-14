@@ -23,6 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             lifecycleOwner = this@HomeFragment
             viewModel = this@HomeFragment.viewModel
+            adapter = FeedListAdapter(listOf(), this@HomeFragment.viewModel)
         }
     }
 

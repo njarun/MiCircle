@@ -1,14 +1,21 @@
 package com.dxp.micircle.domain.router.model
 
-import android.os.Parcelable
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class UserModel(
-    val userId: String,
-    val created: Long,
-    val fName: String,
-    val lNAme: String,
-    val profileImageUrl: String?
-) : Parcelable, BaseListItem
+class UserModel(): BaseListItem {
+
+    constructor(userId: String, created: Long, fName: String, lName: String, profileImageUrl: String?) : this() {
+
+        this.userId = userId
+        this.created = created
+        this.fName = fName
+        this.lName = lName
+        this.profileImageUrl = profileImageUrl
+    }
+
+    var userId: String? = null
+    var created: Long? = null
+    var fName: String? = null
+    var lName: String? = null
+    var profileImageUrl: String? = null
+}
