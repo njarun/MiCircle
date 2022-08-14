@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class PostModel(
     val postId: String,
     val userId: String,
-    val timestamp: Long,
+    var timestamp: Long,
     val text: String?,
     val postPrivacy: Int,
     val mediaList: ArrayList<MediaModel>?

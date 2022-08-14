@@ -29,6 +29,7 @@ class FirebasePostToBackend @Inject constructor(private val workManager: WorkMan
                 val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
                     .child(postModel.postId)
 
+                postModel.timestamp = postModel.timestamp*-1
                 val postTask = postRef.setValue(postModel)
                 Tasks.await(postTask)
 

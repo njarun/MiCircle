@@ -9,7 +9,7 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers, privat
 
     private val subscriptions = CompositeDisposable()
 
-    operator fun invoke(from: Long, to: Long) = feedsRepository.getFeeds(from, to)
+    operator fun invoke(from: Long) = feedsRepository.getFeeds(from)
 
     fun onCleared() {
 

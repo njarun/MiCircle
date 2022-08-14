@@ -22,10 +22,10 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds) : B
 
     init {
 
-        fetchData()
+        fetchData(-1)
     }
 
-    private fun fetchData() {
+    private fun fetchData(from: Long) {
 
         try {
 
@@ -33,15 +33,24 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds) : B
 
             subscription {
 
-                feeds(-1, -1)
+                feeds(from)
                     .subscribeOn(feeds.schedulers.ioScheduler)
                     .observeOn(feeds.schedulers.uiScheduler)
                     .subscribe({ result ->
 
                         _viewRefreshState.postValue(false)
 
-                        _feedListLive.value = result
+                        if(from == -1L)
+                            _feedListLive.value = result
+                        else {
 
+                            if(result.size == 1 && //To fix firebase returning same item infinitely
+                                result[0].postId == feedListLive.value!![feedListLive.value!!.size - 1].postId) {
+                                return@subscribe
+                            }
+
+                            _feedListLive.value = (feedListLive.value?.plus(result) ?: result) as ArrayList<FeedModel>
+                        }
                     }, {
 
                         _viewRefreshState.postValue(false)
@@ -59,7 +68,7 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds) : B
 
     fun onRefresh() {
 
-        fetchData()
+        fetchData(-1)
     }
 
     override fun onCleared() {
@@ -90,5 +99,14 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds) : B
 
     override fun onFeedScrolledToEnd(postEndPos: Int) {
 
+        var timestamp: Long = -1
+
+        if((feedListLive.value?.size ?: 0) > 0) {
+
+            val pos = if((feedListLive.value?.size ?: 0) > postEndPos) postEndPos else (feedListLive.value?.size ?: 1) - 1
+            timestamp = feedListLive.value!![pos].timestamp
+        }
+
+        fetchData(timestamp)
     }
 }

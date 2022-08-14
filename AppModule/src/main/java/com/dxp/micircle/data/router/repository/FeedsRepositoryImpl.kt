@@ -9,19 +9,25 @@ import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : FeedsRepository {
 
-    override fun getFeeds(from: Long, to: Long): Single<ArrayList<FeedModel>> {
+    override fun getFeeds(from: Long): Single<ArrayList<FeedModel>> {
 
         val subject = SingleSubject.create<ArrayList<FeedModel>>()
         return subject.doOnSubscribe {
 
+            val startAfter = if(from == -1L)
+                System.currentTimeMillis()
+            else from
+
             val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
             val userRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
 
-            val task = postRef.limitToLast(100)
-                .orderByChild("timestamp")
+            val task = postRef.orderByChild("timestamp")
+                .startAfter(-startAfter.toDouble())
+                .limitToFirst(4)
                 .get()
 
             Tasks.await(task)
@@ -50,7 +56,7 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
 
                     feed.userName = nameAndUrlPair?.first
                     feed.imageUrl = nameAndUrlPair?.second
-
+                    feed.timestamp = feed.timestamp.absoluteValue
                     feedList.add(feed)
                 }
             }

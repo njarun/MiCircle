@@ -113,6 +113,7 @@ private val firebaseStorage: FirebaseStorage) : CoroutineWorker(context, params)
 
                         updateProgress(100, true)
 
+                        postModel.timestamp = postModel.timestamp*-1
                         val postTask = postRef.setValue(postModel)
                         Tasks.await(postTask)
 

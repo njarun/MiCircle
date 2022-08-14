@@ -5,5 +5,5 @@ import io.reactivex.Single
 
 interface FeedsRepository {
 
-    fun getFeeds(from: Long, to: Long): Single<ArrayList<FeedModel>>
+    fun getFeeds(from: Long): Single<ArrayList<FeedModel>>
 }
