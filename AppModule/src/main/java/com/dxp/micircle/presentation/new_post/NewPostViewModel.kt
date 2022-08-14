@@ -1,5 +1,6 @@
 package com.dxp.micircle.presentation.new_post
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dxp.micircle.Config
@@ -30,7 +31,7 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
     lateinit var firebaseAuth: FirebaseAuth
 
     private val _mediaModelsLive = MutableLiveData<ArrayList<MediaModel>>(ArrayList())
-    val mediaModelsLive: MutableLiveData<ArrayList<MediaModel>> = _mediaModelsLive
+    val mediaModelsLive: LiveData<ArrayList<MediaModel>> = _mediaModelsLive
 
     private lateinit var apiJob: Job
 

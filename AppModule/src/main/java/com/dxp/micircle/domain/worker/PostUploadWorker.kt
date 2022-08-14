@@ -19,6 +19,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.dxp.micircle.Config
 import com.dxp.micircle.R
+import com.dxp.micircle.domain.helpers.NewPostObserver
 import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.dxp.micircle.utils.Constants
 import com.google.android.gms.tasks.Tasks
@@ -36,7 +37,7 @@ import java.util.*
 class PostUploadWorker @AssistedInject constructor(@Assisted val context: Context,
 @Assisted val params: WorkerParameters, private val firebaseAuth: FirebaseAuth,
 private val postsRepository: PostsRepository, private val firebaseDatabase: FirebaseDatabase,
-private val firebaseStorage: FirebaseStorage) : CoroutineWorker(context, params) {
+private val firebaseStorage: FirebaseStorage, private val newPostObserver: NewPostObserver) : CoroutineWorker(context, params) {
 
     private val notiChannelId = Constants.NEW_POST_WORKER_NOTIFICATION_CHANNEL_ID
     private val notiId = (1023..11589).random()
@@ -121,6 +122,8 @@ private val firebaseStorage: FirebaseStorage) : CoroutineWorker(context, params)
                             throw postTask.exception ?: Exception("-1")
 
                         postsRepository.deletePost(postId)
+
+                        newPostObserver.publish(postModel)
 
                         updateProgress(100, false)
                     }

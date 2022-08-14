@@ -1,6 +1,8 @@
 package com.dxp.micircle.presentation.dashboard.pages.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.usecase.FirebaseGetFeeds
 import com.dxp.micircle.presentation.base.BaseViewModel
@@ -10,11 +12,12 @@ import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds) : BaseViewModel(), FeedListener {
+@HiltViewModel @Suppress("UNCHECKED_CAST")
+class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds,
+            private var schedulers: AppSchedulers) : BaseViewModel(), FeedListener {
 
     private val _feedListLive = MutableLiveData<ArrayList<FeedModel>>(ArrayList())
-    val feedListLive: MutableLiveData<ArrayList<FeedModel>> = _feedListLive
+    val feedListLive: LiveData<ArrayList<FeedModel>> = _feedListLive
 
     fun createNewPost() {
         emitAction(OnNewPost)
@@ -22,20 +25,48 @@ class HomeViewModel @Inject constructor(private val feeds: FirebaseGetFeeds) : B
 
     init {
 
+        watchNewPost()
+
         fetchData(-1)
+    }
+
+    private fun watchNewPost() {
+
+        subscription {
+
+            feeds.watchNewPost()
+                .subscribeOn(schedulers.ioScheduler)
+                .observeOn(schedulers.uiScheduler)
+                .subscribe({ feedModel ->
+
+                    val feedList: ArrayList<FeedModel> = ArrayList()
+                    feedList.add(feedModel)
+
+                    _feedListLive.value = (_feedListLive.value?.let { feedList.plus(it) } ?: feedList) as ArrayList<FeedModel>
+                }, {
+
+                    it.printStackTrace()
+
+                    emitAction(OnException(it))
+                })
+        }
     }
 
     private fun fetchData(from: Long) {
 
         try {
 
+            if(viewRefreshState.value == true) {
+                return
+            }
+
             _viewRefreshState.postValue(true)
 
             subscription {
 
                 feeds(from)
-                    .subscribeOn(feeds.schedulers.ioScheduler)
-                    .observeOn(feeds.schedulers.uiScheduler)
+                    .subscribeOn(schedulers.ioScheduler)
+                    .observeOn(schedulers.uiScheduler)
                     .subscribe({ result ->
 
                         _viewRefreshState.postValue(false)

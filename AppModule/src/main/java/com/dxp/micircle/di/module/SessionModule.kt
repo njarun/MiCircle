@@ -5,6 +5,7 @@ import androidx.work.WorkManager
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.di.annotations.IoScheduler
 import com.dxp.micircle.di.annotations.UiScheduler
+import com.dxp.micircle.domain.helpers.NewPostObserver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,4 +36,8 @@ object SessionModule {
     @Singleton
     @Provides
     fun provideWorkerManager(@ApplicationContext context: Context): WorkManager = WorkManager.getInstance(context)
+
+    @Singleton
+    @Provides
+    fun providePostWatcher(): NewPostObserver = NewPostObserver()
 }

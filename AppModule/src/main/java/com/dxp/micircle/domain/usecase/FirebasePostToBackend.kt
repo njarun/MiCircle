@@ -3,6 +3,7 @@ package com.dxp.micircle.domain.usecase
 import androidx.work.*
 import com.dxp.micircle.Config
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
+import com.dxp.micircle.domain.helpers.NewPostObserver
 import com.dxp.micircle.domain.router.model.PostModel
 import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.dxp.micircle.domain.worker.PostUploadWorker
@@ -20,6 +21,9 @@ class FirebasePostToBackend @Inject constructor(private val workManager: WorkMan
     @Inject
     lateinit var firebaseDatabase: FirebaseDatabase
 
+    @Inject
+    lateinit var newPostObserver: NewPostObserver
+
     fun execute(postModel: PostModel) = flow {
 
         try {
@@ -35,6 +39,8 @@ class FirebasePostToBackend @Inject constructor(private val workManager: WorkMan
 
                 if(!postTask.isSuccessful)
                     throw postTask.exception ?: Exception("-1")
+
+                newPostObserver.publish(postModel)
 
                 emit(1)
             }

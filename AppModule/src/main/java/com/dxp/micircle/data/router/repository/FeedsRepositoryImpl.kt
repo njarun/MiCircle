@@ -1,7 +1,9 @@
 package com.dxp.micircle.data.router.repository
 
 import com.dxp.micircle.Config
+import com.dxp.micircle.data.dto.mapper.PostsModelFeedMapper.toFeedModel
 import com.dxp.micircle.domain.router.model.FeedModel
+import com.dxp.micircle.domain.router.model.PostModel
 import com.dxp.micircle.domain.router.model.UserModel
 import com.dxp.micircle.domain.router.repository.FeedsRepository
 import com.google.android.gms.tasks.Tasks
@@ -11,6 +13,7 @@ import io.reactivex.subjects.SingleSubject
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : FeedsRepository {
 
     override fun getFeeds(from: Long): Single<ArrayList<FeedModel>> {
@@ -63,5 +66,24 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
 
             subject.onSuccess(feedList)
         }
+    }
+
+    override suspend fun processNewPostToFeed(newPost: PostModel): FeedModel {
+
+        val feedModel = newPost.toFeedModel()
+        feedModel.timestamp = feedModel.timestamp.absoluteValue
+        val userRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
+        val userTask = userRef.child(feedModel.userId!!).get()
+        Tasks.await(userTask)
+
+        if (userTask.isSuccessful) {
+
+            val user: UserModel = userTask.result.getValue(UserModel::class.java)!!
+            feedModel.userName = "${user.fName} ${user.lName}"
+            feedModel.imageUrl = user.profileImageUrl
+        }
+        else throw Exception("-1")
+
+        return feedModel
     }
 }
