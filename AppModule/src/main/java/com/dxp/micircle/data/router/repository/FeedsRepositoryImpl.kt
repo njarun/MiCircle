@@ -16,7 +16,7 @@ import kotlin.math.absoluteValue
 @Suppress("BlockingMethodInNonBlockingContext")
 class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : FeedsRepository {
 
-    override fun getFeeds(from: Long): Single<ArrayList<FeedModel>> {
+    override fun getFeeds(from: Long, uid: String?): Single<ArrayList<FeedModel>> {
 
         val subject = SingleSubject.create<ArrayList<FeedModel>>()
         return subject.doOnSubscribe {
@@ -28,10 +28,11 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
             val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
             val userRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
 
-            val task = postRef.orderByChild("timestamp")
+            val query = postRef.orderByChild("timestamp")
                 .startAfter(-startAfter.toDouble())
                 .limitToFirst(Config.FEED_PAGE_LIMIT)
-                .get()
+
+            val task = query.get()
 
             Tasks.await(task)
 

@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 interface FeedsRepository {
 
-    fun getFeeds(from: Long): Single<ArrayList<FeedModel>>
+    fun getFeeds(from: Long, uid: String?): Single<ArrayList<FeedModel>>
 
     suspend fun processNewPostToFeed(newPost: PostModel): FeedModel
 

@@ -100,7 +100,7 @@ class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAut
 
             subscription {
 
-                feeds.getAllFeeds(from)
+                feeds.getAllFeeds(from, getCurrentUserId())
                     .subscribeOn(schedulers.ioScheduler)
                     .observeOn(schedulers.uiScheduler)
                     .subscribe({ result ->

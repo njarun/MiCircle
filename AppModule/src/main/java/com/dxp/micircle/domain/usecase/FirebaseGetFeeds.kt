@@ -43,7 +43,7 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
         }
     }
 
-    fun getAllFeeds(from: Long) = feedsRepository.getFeeds(from)
+    fun getAllFeeds(from: Long, uid: String? = null) = feedsRepository.getFeeds(from, uid)
 
     fun deleteFeed(feedModel: FeedModel) = flow {
 
