@@ -20,7 +20,7 @@ class FeedsRepositoryImpl @Inject constructor(private val firebaseDatabase: Fire
             val postRef = firebaseDatabase.reference.child(Config.FBD_POSTS_PATH)
             val userRef = firebaseDatabase.reference.child(Config.FBD_USERS_PATH)
 
-            val task = postRef.limitToLast(10)
+            val task = postRef.limitToLast(100)
                 .orderByChild("timestamp")
                 .get()
 

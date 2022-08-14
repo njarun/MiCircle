@@ -53,10 +53,10 @@
                     style="@style/ShapeCircle"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@mipmap/feed_placeholder"
+                    android:src="@mipmap/ic_launcher_round"
                     android:scaleType="centerCrop"
                     app:imageUrl="@{feedModel.imageUrl}"
-                    app:placeholder="@{com.dxp.micircle.R.mipmap.feed_placeholder}"
+                    app:placeholder="@{com.dxp.micircle.R.mipmap.ic_launcher_round}"
                     android:contentDescription="@string/new_post_media_preview" />
 
                 <LinearLayout
