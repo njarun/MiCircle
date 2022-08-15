@@ -82,4 +82,4 @@ Kotlin
   
 **NewPost Upload Notification:**  
   
-<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=7_NewPost_Upload_Notification" width="360" height="780"> 
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=7_NewPost_Upload_Notification.png" width="360" height="780">  
