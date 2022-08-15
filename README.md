@@ -53,3 +53,33 @@ Kotlin
 7. Hilt for dependency injection
 8. Work manager support for background media upload
 9. Day/Night theme support
+
+### Screenshots:
+  
+**Splash Page:**  
+  
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=1_Splash.png" width="360" height="780"> 
+  
+**Login Page:**  
+  
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=2_Login.png" width="360" height="780"> 
+  
+**Registration Page:**  
+  
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=3_Registration.png" width="360" height="780">  
+  
+**Home Page:**  
+  
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=4_Home.png" width="360" height="780">  
+  
+**Profile Page:**  
+  
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=5_Profile.png" width="360" height="780">  
+  
+**New Post Page:**  
+  
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=6_NewPost.png" width="360" height="780">  
+  
+**NewPost Upload Notification:**  
+  
+<img src="https://drive.neptunelabs.xyz/s/SocialMediaApp/download?path=%2F&files=7_NewPost_Upload_Notification" width="360" height="780"> 
