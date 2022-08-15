@@ -100,7 +100,7 @@ class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAut
 
             subscription {
 
-                feeds.getAllFeeds(from, getCurrentUserId())
+                feeds.getAllFeeds(from, getCurrentUserId(), false)
                     .subscribeOn(schedulers.ioScheduler)
                     .observeOn(schedulers.uiScheduler)
                     .subscribe({ result ->
@@ -111,7 +111,7 @@ class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAut
                             _feedListLive.value = result
                         else {
 
-                            if(result.size == 1 && //To fix firebase returning same item infinitely
+                            if(result.size == 1 && //To fix firebase returning same item infinitely, needs reinvestigation @Todo -- nj
                                 result[0].postId == feedListLive.value!![feedListLive.value!!.size - 1].postId) {
                                 return@subscribe
                             }

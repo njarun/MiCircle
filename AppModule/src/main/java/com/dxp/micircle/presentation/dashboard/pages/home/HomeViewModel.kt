@@ -74,7 +74,7 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
 
             subscription {
 
-                feeds.getAllFeeds(from)
+                feeds.getAllFeeds(from, null, true)
                     .subscribeOn(schedulers.ioScheduler)
                     .observeOn(schedulers.uiScheduler)
                     .subscribe({ result ->

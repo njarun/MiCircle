@@ -43,7 +43,7 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
         }
     }
 
-    fun getAllFeeds(from: Long, uid: String? = null) : Observable<ArrayList<FeedModel>> {
+    fun getAllFeeds(from: Long, uid: String? = null, saveToLocal: Boolean = false) : Observable<ArrayList<FeedModel>> {
 
         val subject = PublishSubject.create<ArrayList<FeedModel>>()
         return subject.doOnSubscribe {
@@ -55,7 +55,8 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
                     .observeOn(schedulers.uiScheduler)
                     .subscribe({ result ->
 
-                        subject.onNext(result)
+                        if(result.isNotEmpty())
+                            subject.onNext(result)
                     }, {
 
                         subject.onError(it)
@@ -67,7 +68,7 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
                 .observeOn(schedulers.uiScheduler)
                 .subscribe({ result ->
 
-                    if(from == -1L)
+                    if(from == -1L && saveToLocal && result.isNotEmpty())
                         deleteAndSaveAllFeeds(result)
 
                     subject.onNext(result)

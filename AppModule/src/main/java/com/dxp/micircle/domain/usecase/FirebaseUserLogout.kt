@@ -2,6 +2,7 @@ package com.dxp.micircle.domain.usecase
 
 import androidx.work.WorkManager
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
+import com.dxp.micircle.domain.router.repository.FeedsRepository
 import com.dxp.micircle.domain.router.repository.PostsRepository
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Single
@@ -18,6 +19,9 @@ class FirebaseUserLogout @Inject constructor(private val firebaseAuth: FirebaseA
 
     @Inject
     lateinit var postsRepository: PostsRepository
+
+    @Inject
+    lateinit var feedsRepository: FeedsRepository
 
     operator fun invoke() : Single<Boolean> {
 
@@ -51,6 +55,8 @@ class FirebaseUserLogout @Inject constructor(private val firebaseAuth: FirebaseA
     .flowOn(coroutineDispatcherProvider.IO())
 
     private suspend fun clearDatabase() {
-        return postsRepository.deleteAllPosts()
+
+        postsRepository.deleteAllPosts()
+        feedsRepository.deleteAllFeeds()
     }
 }

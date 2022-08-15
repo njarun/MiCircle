@@ -18,6 +18,6 @@ interface FeedMediaDao {
     @Query("DELETE FROM feed_medias WHERE postId = :postId")
     fun delete(postId: String)
 
-    @Query("DELETE FROM medias")
+    @Query("DELETE FROM feed_medias")
     fun delete()
 }
