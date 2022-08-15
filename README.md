@@ -11,12 +11,15 @@ Clean - MVVM
 Kotlin  
 
 **Project Highlights:**   
-1. Object oriented programming approach
-2. DI using Hilt
-3. Usage of Jetpack components such as Room, NavGraph, View/DataBinding, ViewModel, LiveData...
-4. Kotlin Coroutines/Flow, Rx
-5. WorkManager to post multimedia to backend 
-6. Firebase Firestore network layer
+1. Focussed on SOLID principles | Clean - MVVM Architecture
+2. Object oriented programming approach
+3. DI using Hilt
+4. Usage of Jetpack components such as Room, NavGraph, View/DataBinding, ViewModel, LiveData...
+5. Kotlin Coroutines/Flow, Rx
+6. WorkManager demonstrating timeline multipart POST requests
+7. Firebase Firestore network layer
+8. Optional Obfuscation
+9. Scalability
 
 **Database used:**   
 [Room](https://developer.android.com/jetpack/androidx/releases/room)
@@ -44,15 +47,16 @@ Kotlin
 9. If the user is offline or the post has media, then the WorkManager is scheduled to share the post to the timeline
 
 ### Capabilities
-1. Clean-MVVM architecture, components are easily replaceable.
+1. Clean-MVVM architecture, components are easily replaceable and focussed on SOLID principles
 2. Rx to pass events/messages to parts of application
 3. The Dashboard transition is with NavGraph component
 4. UI is loaded by View/Data binding
 5. Functional/Method bindings for views
-6. Room database is updated with API results for persistence
-7. Hilt for dependency injection
-8. Work manager support for background media upload
-9. Day/Night theme support
+6. Factory class structure for Local/Network data sources
+7. Room database is updated with API results for persistence
+8. Hilt for dependency injection
+9. Work manager support for background media upload
+10. Day/Night theme support
 
 ### Screenshots:
   
