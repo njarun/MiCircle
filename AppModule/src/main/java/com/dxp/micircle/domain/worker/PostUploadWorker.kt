@@ -77,7 +77,7 @@ private val firebaseStorage: FirebaseStorage, private val newPostObserver: NewPo
 
                                 updateProgress(getProgress(++currentMedia, postModel.mediaList.size), false)
 
-                                if(!mediaModel.url.startsWith(Config.FBS_STORAGE_PATH)) { //Check if already uploaded - @Todo Move this to a flag and remove the url check -- nj
+                                if(!mediaModel.url.contains("firebasestorage.googleapis.com")) { //Check if already uploaded - @Todo Move this to a flag and remove the url check -- nj
 
                                     val file = File(mediaModel.url)
 
