@@ -1,5 +1,6 @@
 package com.dxp.micircle.domain.usecase
 
+import com.dxp.micircle.data.database.dao.FeedDao
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.helpers.NewPostObserver
@@ -21,6 +22,9 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
     @Inject
     lateinit var newPostObserver: NewPostObserver
 
+    @Inject
+    lateinit var feedsDao: FeedDao
+
     private val subscriptions = CompositeDisposable()
 
     fun watchNewPost() : Observable<FeedModel> {
@@ -39,7 +43,49 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
         }
     }
 
-    fun getAllFeeds(from: Long, uid: String? = null) = feedsRepository.getFeeds(from, uid)
+    fun getAllFeeds(from: Long, uid: String? = null) : Observable<ArrayList<FeedModel>> {
+
+        val subject = PublishSubject.create<ArrayList<FeedModel>>()
+        return subject.doOnSubscribe {
+
+            if(from == -1L) {
+
+                subscriptions.add(feedsRepository.getFeedsFromLocal(uid)
+                    .subscribeOn(schedulers.ioScheduler)
+                    .observeOn(schedulers.uiScheduler)
+                    .subscribe({ result ->
+
+                        subject.onNext(result)
+                    }, {
+
+                        subject.onError(it)
+                    }))
+            }
+
+            subscriptions.add(feedsRepository.getFeedsFromNetwork(from, uid)
+                .subscribeOn(schedulers.ioScheduler)
+                .observeOn(schedulers.uiScheduler)
+                .subscribe({ result ->
+
+                    if(from == -1L)
+                        deleteAndSaveAllFeeds(result)
+
+                    subject.onNext(result)
+                }, {
+
+                    subject.onError(it)
+                }))
+        }
+    }
+
+    private fun deleteAndSaveAllFeeds(newFeedList: ArrayList<FeedModel>) {
+
+        CoroutineScope(coroutineDispatcherProvider.IO()).launch {
+
+            feedsRepository.deleteAllFeeds()
+            feedsRepository.saveFeeds(newFeedList)
+        }
+    }
 
     fun deleteFeed(feedModel: FeedModel) = flow {
 

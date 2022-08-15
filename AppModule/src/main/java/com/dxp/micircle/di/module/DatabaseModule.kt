@@ -3,6 +3,8 @@ package com.dxp.micircle.di.module
 import android.content.Context
 import androidx.room.Room
 import com.dxp.micircle.data.database.AppDatabase
+import com.dxp.micircle.data.database.dao.FeedDao
+import com.dxp.micircle.data.database.dao.FeedMediaDao
 import com.dxp.micircle.data.database.dao.MediaDao
 import com.dxp.micircle.data.database.dao.PostDao
 import dagger.Module
@@ -34,5 +36,15 @@ object DatabaseModule {
     @Provides
     fun provideMediaDao(appDatabase: AppDatabase): MediaDao {
         return appDatabase.mediaDao()
+    }
+
+    @Provides
+    fun provideFeedsDao(appDatabase: AppDatabase): FeedDao {
+        return appDatabase.feedDao()
+    }
+
+    @Provides
+    fun provideFeedMediaDao(appDatabase: AppDatabase): FeedMediaDao {
+        return appDatabase.feedMediaDao()
     }
 }

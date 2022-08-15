@@ -4,7 +4,7 @@ import com.dxp.micircle.presentation.base.adapters.BaseListItem
 
 class FeedModel() : BaseListItem {
 
-    constructor(postId: String?, userId: String?, timestamp: Long, text: String?, postPrivacy: Int, mediaList: ArrayList<FeedMediaModel>?, userName: String?, imageUrl: String?) : this() {
+    constructor(postId: String, userId: String, timestamp: Long, text: String?, postPrivacy: Int, mediaList: ArrayList<FeedMediaModel>?, userName: String?, imageUrl: String?) : this() {
 
         this.postId = postId
         this.userId = userId
@@ -16,8 +16,8 @@ class FeedModel() : BaseListItem {
         this.imageUrl = imageUrl
     }
 
-    var postId: String? = null
-    var userId: String? = null
+    var postId: String = ""
+    var userId: String = ""
     var timestamp: Long = 0
     var text: String? = null
     var postPrivacy: Int = 0

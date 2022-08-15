@@ -13,11 +13,11 @@ class MapMediaToModel @Inject constructor(private val mapperEntityData: MiMediaR
 
     fun execute(miMediaList: List<MiMedia>) = flow {
 
-        val localNews = mapToMediaModel(miMediaList)
+        val localMedia = mapToMediaModel(miMediaList)
 
-        if (localNews.isNotEmpty()) {
+        if (localMedia.isNotEmpty()) {
 
-            emit(localNews)
+            emit(localMedia)
             emit(false)
         }
     }

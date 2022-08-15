@@ -1,14 +1,12 @@
-package com.dxp.micircle.domain.router.repository
+package com.dxp.micircle.data.router.source
 
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.model.PostModel
 import io.reactivex.Single
 
-interface FeedsRepository {
+interface FeedsEntityData {
 
-    fun getFeedsFromNetwork(from: Long, uid: String?): Single<ArrayList<FeedModel>>
-
-    fun getFeedsFromLocal(uid: String?): Single<ArrayList<FeedModel>>
+    fun getFeeds(from: Long, uid: String?): Single<ArrayList<FeedModel>>
 
     suspend fun saveFeeds(feedModelList: List<FeedModel>)
 

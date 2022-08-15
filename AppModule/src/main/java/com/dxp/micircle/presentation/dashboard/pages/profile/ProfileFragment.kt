@@ -23,7 +23,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
         getViewBinding().apply {
 
-            lifecycleOwner = this@ProfileFragment
+            lifecycleOwner = activity
             selfId = this@ProfileFragment.viewModel.getCurrentUserId()
             viewModel = this@ProfileFragment.viewModel
             adapter = FeedListAdapter(listOf(), this@ProfileFragment.viewModel.getCurrentUserId(), this@ProfileFragment.viewModel)

@@ -4,7 +4,7 @@ import com.dxp.micircle.presentation.base.adapters.BaseListItem
 
 class FeedMediaModel(): BaseListItem {
 
-    constructor(mediaId: String?, postId: String?, type: Int, url: String?, size: Long) : this() {
+    constructor(mediaId: String, postId: String, type: Int, url: String, size: Long) : this() {
         this.mediaId = mediaId
         this.postId = postId
         this.type = type
@@ -12,9 +12,9 @@ class FeedMediaModel(): BaseListItem {
         this.size = size
     }
 
-    var mediaId: String? = null
-    var postId: String? = null
+    var mediaId: String = ""
+    var postId: String = ""
     var type: Int = 0
-    var url: String? = null
+    var url: String = ""
     var size: Long = 0
 }

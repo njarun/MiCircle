@@ -28,11 +28,6 @@ object RepositoryModule {
     }
 
     @Provides
-    fun provideFeedsRepository(FirebaseFirestore: FirebaseFirestore): FeedsRepository {
-        return FeedsRepositoryImpl(FirebaseFirestore)
-    }
-
-    @Provides
     fun provideUsersRepository(FirebaseFirestore: FirebaseFirestore): UsersRepository {
         return UsersRepositoryImpl(FirebaseFirestore)
     }
@@ -41,6 +36,10 @@ object RepositoryModule {
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class MiMediaRepoModule {
+
     @Binds
     abstract fun bindMediaEntityData(mediaEntityImpl: MiMediaRepositoryImpl): MiMediaRepository
+
+    @Binds
+    abstract fun bindFeedsRepository(feedsRepositoryImpl: FeedsRepositoryImpl): FeedsRepository
 }

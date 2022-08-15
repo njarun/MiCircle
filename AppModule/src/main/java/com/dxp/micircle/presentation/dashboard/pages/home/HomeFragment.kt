@@ -21,7 +21,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         getViewBinding().apply {
 
-            lifecycleOwner = this@HomeFragment
+            lifecycleOwner = activity
             viewModel = this@HomeFragment.viewModel
             adapter = FeedListAdapter(listOf(), this@HomeFragment.viewModel.getCurrentUserId(), this@HomeFragment.viewModel)
         }
