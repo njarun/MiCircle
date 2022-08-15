@@ -19,7 +19,9 @@ object PostsEntityMapper {
                     it.timestamp,
                     it.text,
                     it.postPrivacy,
-                    it.mediaList?.toMediaModelList()
+                    it.mediaList?.toMediaModelList(),
+                    it.userName,
+                    it.imageUrl
                 )
             )
         }
@@ -35,7 +37,9 @@ object PostsEntityMapper {
             timestamp,
             text,
             postPrivacy,
-            mediaList?.toMediaModelList()
+            mediaList?.toMediaModelList(),
+            userName,
+            imageUrl
         )
     }
 }

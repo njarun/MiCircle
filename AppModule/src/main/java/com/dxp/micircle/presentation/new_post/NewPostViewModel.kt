@@ -6,8 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.dxp.micircle.Config
 import com.dxp.micircle.R
 import com.dxp.micircle.domain.entities.PrivacyType
+import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.router.model.MediaModel
 import com.dxp.micircle.domain.router.model.PostModel
+import com.dxp.micircle.domain.router.model.UserModel
+import com.dxp.micircle.domain.usecase.FirebaseFetchUser
 import com.dxp.micircle.domain.usecase.FirebasePostToBackend
 import com.dxp.micircle.domain.usecase.MapMediaToModel
 import com.dxp.micircle.presentation.base.*
@@ -25,15 +28,41 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel @Suppress("UNCHECKED_CAST")
-class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, private val postData: FirebasePostToBackend): BaseViewModel(), ItemListener {
-
-    @Inject
-    lateinit var firebaseAuth: FirebaseAuth
+class NewPostViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth, private val mapper: MapMediaToModel, private val postData: FirebasePostToBackend,
+           private val fetchUser: FirebaseFetchUser, private var schedulers: AppSchedulers): BaseViewModel(), ItemListener {
 
     private val _mediaModelsLive = MutableLiveData<ArrayList<MediaModel>>(ArrayList())
     val mediaModelsLive: LiveData<ArrayList<MediaModel>> = _mediaModelsLive
 
+    private val _userModelLive = MutableLiveData<UserModel>()
+    val userModelLive: LiveData<UserModel> = _userModelLive
+
     private lateinit var apiJob: Job
+
+    init {
+
+        fetchProfile() // Call this from the dash activity and pass it here instead of fetching here @Todo planned for next release -- nj
+    }
+
+    private fun fetchProfile() {
+
+        firebaseAuth.currentUser?.let {
+
+            subscription {
+
+                fetchUser.execute(it.uid)
+                    .subscribeOn(schedulers.ioScheduler)
+                    .observeOn(schedulers.uiScheduler)
+                    .subscribe({ userModel ->
+
+                        _userModelLive.value = userModel
+                    }, {
+
+                        emitAction(OnException(it))
+                    })
+            }
+        }
+    }
 
     fun openMediaPicker() {
 
@@ -102,13 +131,23 @@ class NewPostViewModel @Inject constructor(private val mapper: MapMediaToModel, 
                     it.postId = postId
                 }
 
+                var userName: String? = null
+                var imageUrl: String? = null
+
+                userModelLive.value?.let {
+                    userName = it.fName + " " + it.lName
+                    imageUrl = it.profileImageUrl
+                }
+
                 val postModel = PostModel(
                     postId,
                     it.uid,
                     System.currentTimeMillis(),
                     text?.take(Config.POST_TEXT_LIMIT),
                     PrivacyType.PUBLIC.value,
-                    mediaModelsLive.value)
+                    mediaModelsLive.value,
+                    userName,
+                    imageUrl)
 
                 apiJob = viewModelScope.launch {
 

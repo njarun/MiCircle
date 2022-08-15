@@ -11,5 +11,6 @@ data class PostModel(
     var timestamp: Long,
     val text: String?,
     val postPrivacy: Int,
-    val mediaList: ArrayList<MediaModel>?
-) : Parcelable, BaseListItem
+    val mediaList: ArrayList<MediaModel>?,
+    val userName: String?,
+    var imageUrl: String?) : Parcelable, BaseListItem

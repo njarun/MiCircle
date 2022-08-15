@@ -10,11 +10,12 @@ import com.dxp.micircle.data.dto.mapper.PostsModelFeedMapper.toFeedModel
 import com.dxp.micircle.data.router.source.FeedsEntityData
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.model.PostModel
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
 import javax.inject.Inject
 
-class LocalFeedsEntityData @Inject constructor(private val feedDao: FeedDao, private val feedMediaDao: FeedMediaDao) : FeedsEntityData {
+class LocalFeedsEntityData @Inject constructor(private val feedDao: FeedDao, private val feedMediaDao: FeedMediaDao, private val firebaseAuth: FirebaseAuth) : FeedsEntityData {
 
     override fun getFeeds(from: Long, uid: String?): Single<ArrayList<FeedModel>> {
 
@@ -38,7 +39,7 @@ class LocalFeedsEntityData @Inject constructor(private val feedDao: FeedDao, pri
         }
     }
 
-    override suspend fun processNewPostToFeed(newPost: PostModel): FeedModel {
+    override fun processNewPostToFeed(newPost: PostModel): FeedModel {
 
         val feedModel = newPost.toFeedModel()
         val feedEntity = feedModel.toFeedEntity()

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dxp.micircle.R
 import com.dxp.micircle.domain.helpers.AppSchedulers
+import com.dxp.micircle.domain.helpers.PostDeleteObserver
 import com.dxp.micircle.domain.router.model.FeedMediaModel
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.usecase.FirebaseGetFeeds
@@ -25,9 +26,14 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
     private val _feedListLive = MutableLiveData<ArrayList<FeedModel>>(ArrayList())
     val feedListLive: LiveData<ArrayList<FeedModel>> = _feedListLive
 
+    @Inject
+    lateinit var postDeleteObserver: PostDeleteObserver
+
     init {
 
         watchNewPost()
+
+        watchPostDeletion()
 
         fetchData(-1)
     }
@@ -53,6 +59,47 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
                     feedList.add(feedModel)
 
                     _feedListLive.value = (_feedListLive.value?.let { feedList.plus(it) } ?: feedList) as ArrayList<FeedModel>
+                }, {
+
+                    it.printStackTrace()
+
+                    emitAction(OnException(it))
+                })
+        }
+    }
+
+    private fun watchPostDeletion() {
+
+        subscription {
+
+            feeds.watchPostDelete()
+                .subscribeOn(schedulers.ioScheduler)
+                .observeOn(schedulers.uiScheduler)
+                .subscribe({ feedModel ->
+
+                    _feedListLive.value?.let {
+
+                        viewModelScope.launch {
+
+                            var removedFeed: FeedModel? = null
+
+                            for (feed in it) {
+
+                                if(feed.postId == feedModel.postId) {
+                                    removedFeed = feed
+                                    break
+                                }
+                            }
+
+                            removedFeed?.let { rmFeed ->
+
+                                val feedList: ArrayList<FeedModel> = it
+                                feedList.remove(rmFeed)
+
+                                _feedListLive.value = feedList
+                            }
+                        }
+                    }
                 }, {
 
                     it.printStackTrace()
@@ -139,13 +186,7 @@ class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
 
                     if(it) {
 
-                        _feedListLive.value?.let {
-
-                            val feedList: ArrayList<FeedModel> = it
-                            feedList.remove(feedModel)
-
-                            _feedListLive.value = feedList
-                        }
+                        postDeleteObserver.publish(feedModel)
                     }
                 }
             }

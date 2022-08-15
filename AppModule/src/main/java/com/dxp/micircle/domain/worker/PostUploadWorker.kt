@@ -34,9 +34,8 @@ import java.io.File
 import java.util.*
 
 @HiltWorker @Suppress("BlockingMethodInNonBlockingContext")
-class PostUploadWorker @AssistedInject constructor(@Assisted val context: Context,
-@Assisted val params: WorkerParameters, private val firebaseAuth: FirebaseAuth,
-private val postsRepository: PostsRepository, private val FirebaseFirestore: FirebaseFirestore,
+class PostUploadWorker @AssistedInject constructor(@Assisted val context: Context, @Assisted val params: WorkerParameters,
+private val firebaseAuth: FirebaseAuth, private val postsRepository: PostsRepository, private val FirebaseFirestore: FirebaseFirestore,
 private val firebaseStorage: FirebaseStorage, private val newPostObserver: NewPostObserver) : CoroutineWorker(context, params) {
 
     private val notiChannelId = Constants.NEW_POST_WORKER_NOTIFICATION_CHANNEL_ID

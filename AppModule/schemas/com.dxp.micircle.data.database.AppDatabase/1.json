@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "dab7a04eedaf2eb8c6da653c1586cfbb",
+    "identityHash": "2e48e7780c7b8f32f4447c8ea20107e0",
     "entities": [
       {
         "tableName": "posts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`postId` TEXT NOT NULL, `userId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `text` TEXT, `postPrivacy` INTEGER NOT NULL, PRIMARY KEY(`postId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`postId` TEXT NOT NULL, `userId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `text` TEXT, `postPrivacy` INTEGER NOT NULL, `userName` TEXT, `imageUrl` TEXT, PRIMARY KEY(`postId`))",
         "fields": [
           {
             "fieldPath": "postId",
@@ -37,6 +37,18 @@
             "columnName": "postPrivacy",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imageUrl",
+            "columnName": "imageUrl",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -198,7 +210,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dab7a04eedaf2eb8c6da653c1586cfbb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2e48e7780c7b8f32f4447c8ea20107e0')"
     ]
   }
 }

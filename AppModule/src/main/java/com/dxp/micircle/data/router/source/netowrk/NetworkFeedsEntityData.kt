@@ -84,7 +84,7 @@ class NetworkFeedsEntityData @Inject constructor(private val FirebaseFirestore: 
         //Do nothing -- nj
     }
 
-    override suspend fun processNewPostToFeed(newPost: PostModel): FeedModel {
+    override fun processNewPostToFeed(newPost: PostModel): FeedModel {
 
         val feedModel = newPost.toFeedModel()
         val userRef = FirebaseFirestore.collection(Config.FBD_USERS_PATH)

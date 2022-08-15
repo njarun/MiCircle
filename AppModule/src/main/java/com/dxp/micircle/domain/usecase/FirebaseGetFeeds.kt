@@ -1,11 +1,14 @@
 package com.dxp.micircle.domain.usecase
 
 import com.dxp.micircle.data.database.dao.FeedDao
+import com.dxp.micircle.data.dto.mapper.PostsModelFeedMapper.toFeedModel
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.helpers.NewPostObserver
+import com.dxp.micircle.domain.helpers.PostDeleteObserver
 import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.repository.FeedsRepository
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
@@ -20,7 +23,13 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
    private val feedsRepository: FeedsRepository, private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
 
     @Inject
+    lateinit var firebaseAuth: FirebaseAuth
+
+    @Inject
     lateinit var newPostObserver: NewPostObserver
+
+    @Inject
+    lateinit var postDeleteObserver: PostDeleteObserver
 
     @Inject
     lateinit var feedsDao: FeedDao
@@ -34,11 +43,19 @@ class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
 
             subscriptions.add(newPostObserver.getObservable().subscribe {
 
-                CoroutineScope(coroutineDispatcherProvider.IO()).launch {
+                subject.onNext(it.toFeedModel())
+            })
+        }
+    }
 
-                    val feedModel = feedsRepository.processNewPostToFeed(it)
-                    subject.onNext(feedModel)
-                }
+    fun watchPostDelete() : Observable<FeedModel> {
+
+        val subject = PublishSubject.create<FeedModel>()
+        return subject.doOnSubscribe {
+
+            subscriptions.add(postDeleteObserver.getObservable().subscribe {
+
+                subject.onNext(it)
             })
         }
     }

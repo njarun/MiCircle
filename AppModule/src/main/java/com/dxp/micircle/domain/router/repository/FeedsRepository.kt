@@ -12,7 +12,7 @@ interface FeedsRepository {
 
     suspend fun saveFeeds(feedModelList: List<FeedModel>)
 
-    suspend fun processNewPostToFeed(newPost: PostModel): FeedModel
+    fun processNewPostToFeed(newPost: PostModel): FeedModel
 
     suspend fun deleteFeed(feedModel: FeedModel): Boolean
 

@@ -15,7 +15,7 @@ object PostsModelFeedMapper {
             text,
             postPrivacy,
             mediaList?.toFeedMediaModelList(),
-            null,
-            null)
+            userName,
+            imageUrl)
     }
 }

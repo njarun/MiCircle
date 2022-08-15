@@ -6,6 +6,7 @@ import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.di.annotations.IoScheduler
 import com.dxp.micircle.di.annotations.UiScheduler
 import com.dxp.micircle.domain.helpers.NewPostObserver
+import com.dxp.micircle.domain.helpers.PostDeleteObserver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,5 +40,9 @@ object SessionModule {
 
     @Singleton
     @Provides
-    fun providePostWatcher(): NewPostObserver = NewPostObserver()
+    fun provideNewPostWatcher(): NewPostObserver = NewPostObserver()
+
+    @Singleton
+    @Provides
+    fun providePostDeleteWatcher(): PostDeleteObserver = PostDeleteObserver()
 }

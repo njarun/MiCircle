@@ -8,7 +8,7 @@ import com.dxp.micircle.domain.router.repository.FeedsRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
-class FeedsRepositoryImpl @Inject constructor(private val feedFactory: FeedFactory) : FeedsRepository {
+class FeedsRepositoryImpl @Inject constructor(feedFactory: FeedFactory) : FeedsRepository {
 
     private val networkRepo = feedFactory.create(Source.NETWORK)
     private val localRepo = feedFactory.create(Source.LOCAL)
@@ -25,7 +25,7 @@ class FeedsRepositoryImpl @Inject constructor(private val feedFactory: FeedFacto
         localRepo.saveFeeds(feedModelList)
     }
 
-    override suspend fun processNewPostToFeed(newPost: PostModel): FeedModel {
+    override fun processNewPostToFeed(newPost: PostModel): FeedModel {
 
         localRepo.processNewPostToFeed(newPost)
         return networkRepo.processNewPostToFeed(newPost)

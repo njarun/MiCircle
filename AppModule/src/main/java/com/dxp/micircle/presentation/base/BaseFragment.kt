@@ -46,8 +46,8 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        vmOperationsDisposible.dispose()
         viewBinding = null
+        vmOperationsDisposible.dispose()
     }
 
     fun getViewBinding(): T = viewBinding as T

@@ -14,7 +14,9 @@ object PostsModelMapper {
             timestamp,
             text,
             postPrivacy,
-            mediaList?.toMediaEntityList()
+            mediaList?.toMediaEntityList(),
+            userName,
+            imageUrl
         )
     }
 }

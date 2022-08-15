@@ -11,12 +11,14 @@ data class PostEntity(
     val userId: String,
     val timestamp: Long,
     val text: String?,
-    val postPrivacy: Int) {
+    val postPrivacy: Int,
+    var userName: String?,
+    var imageUrl: String?) {
 
     @Ignore
     var mediaList: ArrayList<MediaEntity>? = null
 
-    constructor(pId: String, uId: String, ts: Long, txt: String?, pp: Int, mL: ArrayList<MediaEntity>?) : this(pId, uId, ts, txt, pp) {
+    constructor(pId: String, uId: String, ts: Long, txt: String?, pp: Int, mL: ArrayList<MediaEntity>?, uN: String?, uUrl: String?) : this(pId, uId, ts, txt, pp, uN, uUrl) {
         this.mediaList = mL
     }
 }
