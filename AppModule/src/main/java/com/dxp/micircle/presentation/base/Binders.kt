@@ -1,13 +1,19 @@
 package com.dxp.micircle.presentation.base
 
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
 import com.dxp.micircle.presentation.base.adapters.recyclerview.BaseAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -88,18 +94,55 @@ fun setRecyclerAdapter(recyclerView: RecyclerView, recyclerviewAdapter: BaseAdap
 }
 
 
-@BindingAdapter(value = ["imageUrl", "dontScale", "placeholder"], requireAll = false)
-fun ImageView.loadImageFromUrlOrPlaceholder(url: String?, dontScale: Boolean?, placeholder: Int?) {
+@BindingAdapter(value = ["imageUrl", "dontScale", "placeholder", "progressView", "errorIcon"], requireAll = false)
+fun ImageView.loadImageFromUrlOrPlaceholder(url: String?, dontScale: Boolean?, placeholder: Int?, progressBar: ProgressBar?, errorIcon: ImageView?) {
 
     if (!url.isNullOrEmpty()) {
 
+        val requestListener: RequestListener<Drawable> = object : RequestListener<Drawable> {
+
+            override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
+
+                errorIcon?.let {
+
+                    if(it.visibility == View.GONE)
+                        it.visibility = View.VISIBLE
+                }
+
+                progressBar?.let {
+
+                    if(it.visibility == View.VISIBLE)
+                        it.visibility = View.GONE
+                }
+
+                return false
+            }
+
+            override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+
+                errorIcon?.let {
+
+                    if(it.visibility == View.VISIBLE)
+                        it.visibility = View.GONE
+                }
+
+                progressBar?.let {
+
+                    if(it.visibility == View.VISIBLE)
+                        it.visibility = View.GONE
+                }
+
+                return false
+            }
+        }
+
         if (dontScale != null && dontScale) {
 
-            Glide.with(context).load(url).into(this)
+            Glide.with(context).load(url).listener(requestListener).into(this)
         }
         else {
 
-            Glide.with(context).load(url).centerCrop().into(this)
+            Glide.with(context).load(url).listener(requestListener).centerCrop().into(this)
         }
     }
     else {

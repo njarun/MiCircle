@@ -32,12 +32,33 @@
             app:imageUrl="@{imagePath}"
             app:dontScale="@{true}"
             app:placeholder="@{com.dxp.micircle.R.drawable.ic_image_placeholder}"
+            app:progressView="@{imageProgressBar}"
+            app:errorIcon="@{imageErrorIcon}"
             android:contentDescription="@string/splash_image"/>
+
+        <ImageView
+            android:id="@+id/image_error_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/error_icon"
+            app:tint="@color/separator_color"
+            android:visibility="gone"/>
+
+        <ProgressBar
+            android:id="@+id/image_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:background="@android:color/transparent"
+            android:indeterminate="true"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="40dp"
+            android:onClick="@{() -> viewModel.onBackPressed()}"
             app:cardBackgroundColor="@color/blackTrans50"
             app:cardElevation="0dp"
             app:contentPaddingLeft="20dp"
@@ -53,7 +74,6 @@
                 android:background="@null"
                 app:tint="@color/white"
                 android:contentDescription="@string/go_back_to_previous_page"
-                android:onClick="@{() -> viewModel.onBackPressed()}"
                 android:src="@drawable/ic_action_back_arrow" />
 
         </androidx.cardview.widget.CardView>

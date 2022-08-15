@@ -39,16 +39,42 @@
             android:paddingBottom="5dp"
             android:orientation="horizontal">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/preview_image_tv"
-                style="@style/ShapeCircle"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@mipmap/ic_launcher_round"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.userModelLive != null ? viewModel.userModelLive.profileImageUrl : ``}"
-                app:placeholder="@{com.dxp.micircle.R.mipmap.ic_launcher_round}"
-                android:contentDescription="@string/new_post_media_preview" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/preview_image_tv"
+                    style="@style/ShapeCircle"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{viewModel.userModelLive != null ? viewModel.userModelLive.profileImageUrl : ``}"
+                    app:placeholder="@{com.dxp.micircle.R.mipmap.ic_launcher_round}"
+                    app:progressView="@{imageProgressBar}"
+                    app:errorIcon="@{imageErrorIcon}"
+                    android:contentDescription="@string/new_post_media_preview" />
+
+                <ImageView
+                    android:id="@+id/image_error_icon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/error_icon"
+                    app:tint="@color/separator_color"
+                    android:visibility="gone"/>
+
+                <ProgressBar
+                    android:id="@+id/image_progress_bar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    android:background="@android:color/transparent"
+                    android:indeterminate="true"/>
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
