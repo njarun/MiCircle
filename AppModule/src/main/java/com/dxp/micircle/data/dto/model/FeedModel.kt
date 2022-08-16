@@ -1,4 +1,4 @@
-package com.dxp.micircle.domain.router.model
+package com.dxp.micircle.data.dto.model
 
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
 

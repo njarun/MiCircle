@@ -7,8 +7,8 @@ import com.dxp.micircle.data.dto.mapper.FeedsEntityMapper.toFeedModelList
 import com.dxp.micircle.data.dto.mapper.FeedsModelMapper.toFeedEntity
 import com.dxp.micircle.data.dto.mapper.FeedsModelMapper.toFeedEntityList
 import com.dxp.micircle.data.dto.mapper.PostsModelFeedMapper.toFeedModel
+import com.dxp.micircle.data.dto.model.FeedModel
 import com.dxp.micircle.data.router.source.FeedsEntityData
-import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.model.PostModel
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Single

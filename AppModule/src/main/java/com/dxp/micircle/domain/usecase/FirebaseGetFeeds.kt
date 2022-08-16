@@ -2,11 +2,11 @@ package com.dxp.micircle.domain.usecase
 
 import com.dxp.micircle.data.database.dao.FeedDao
 import com.dxp.micircle.data.dto.mapper.PostsModelFeedMapper.toFeedModel
+import com.dxp.micircle.data.dto.model.FeedModel
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
 import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.helpers.NewPostObserver
 import com.dxp.micircle.domain.helpers.PostDeleteObserver
-import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.repository.FeedsRepository
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Observable
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class FirebaseGetFeeds @Inject constructor(var schedulers: AppSchedulers,
+class FirebaseGetFeeds @Inject constructor(val schedulers: AppSchedulers,
    private val feedsRepository: FeedsRepository, private val coroutineDispatcherProvider: CoroutineDispatcherProvider) {
 
     @Inject

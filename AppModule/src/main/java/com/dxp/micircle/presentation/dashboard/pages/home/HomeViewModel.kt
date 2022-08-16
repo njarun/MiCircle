@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dxp.micircle.R
+import com.dxp.micircle.data.dto.model.FeedMediaModel
+import com.dxp.micircle.data.dto.model.FeedModel
 import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.helpers.PostDeleteObserver
-import com.dxp.micircle.domain.router.model.FeedMediaModel
-import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.usecase.FirebaseGetFeeds
 import com.dxp.micircle.presentation.base.*
 import com.dxp.micircle.presentation.base.adapters.BaseListItem
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel @Suppress("UNCHECKED_CAST")
 class HomeViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
-    private val feeds: FirebaseGetFeeds, private var schedulers: AppSchedulers) : BaseViewModel(), FeedListener {
+    private val feeds: FirebaseGetFeeds, private val schedulers: AppSchedulers) : BaseViewModel(), FeedListener {
 
     private val _feedListLive = MutableLiveData<ArrayList<FeedModel>>(ArrayList())
     val feedListLive: LiveData<ArrayList<FeedModel>> = _feedListLive

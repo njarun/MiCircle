@@ -15,7 +15,7 @@
 
         <variable
             name="feedModel"
-            type="com.dxp.micircle.domain.router.model.FeedModel" />
+            type="com.dxp.micircle.data.dto.model.FeedModel" />
 
         <variable
             name="position"

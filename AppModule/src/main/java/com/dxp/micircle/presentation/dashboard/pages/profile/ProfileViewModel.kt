@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dxp.micircle.R
+import com.dxp.micircle.data.dto.model.FeedMediaModel
+import com.dxp.micircle.data.dto.model.FeedModel
+import com.dxp.micircle.data.dto.model.UserModel
+import com.dxp.micircle.data.session.SessionContext
 import com.dxp.micircle.domain.helpers.AppSchedulers
 import com.dxp.micircle.domain.helpers.PostDeleteObserver
-import com.dxp.micircle.domain.router.model.FeedMediaModel
-import com.dxp.micircle.domain.router.model.FeedModel
-import com.dxp.micircle.domain.router.model.UserModel
 import com.dxp.micircle.domain.usecase.FirebaseFetchUser
 import com.dxp.micircle.domain.usecase.FirebaseGetFeeds
 import com.dxp.micircle.domain.usecase.FirebaseUserLogout
@@ -25,8 +26,8 @@ import javax.inject.Inject
 
 @HiltViewModel @Suppress("UNCHECKED_CAST")
 class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth,
-   private val userLogout: FirebaseUserLogout, private val feeds: FirebaseGetFeeds,
-   private val fetchUser: FirebaseFetchUser, private var schedulers: AppSchedulers): BaseViewModel(), FeedListener {
+   private val userLogout: FirebaseUserLogout, private val feeds: FirebaseGetFeeds, private val fetchUser: FirebaseFetchUser,
+   private val schedulers: AppSchedulers, private val sessionContext: SessionContext): BaseViewModel(), FeedListener {
 
     private val _userModelLive = MutableLiveData<UserModel>()
     val userModelLive: LiveData<UserModel> = _userModelLive
@@ -39,7 +40,7 @@ class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAut
 
     init {
 
-        fetchProfile()
+        fetchProfile(force = false)
 
         watchNewPost()
 
@@ -115,22 +116,29 @@ class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAut
         }
     }
 
-    private fun fetchProfile() {
+    private fun fetchProfile(force: Boolean) {
 
-        firebaseAuth.currentUser?.let {
+        if(!force && sessionContext.userModel != null) {
 
-            subscription {
+            _userModelLive.value = sessionContext.userModel
+        }
+        else {
 
-                fetchUser.execute(it.uid)
-                    .subscribeOn(schedulers.ioScheduler)
-                    .observeOn(schedulers.uiScheduler)
-                    .subscribe({ userModel ->
+            firebaseAuth.currentUser?.let {
 
-                        _userModelLive.value = userModel
-                    }, {
+                subscription {
 
-                        emitAction(OnException(it))
-                    })
+                    fetchUser.execute(it.uid)
+                        .subscribeOn(schedulers.ioScheduler)
+                        .observeOn(schedulers.uiScheduler)
+                        .subscribe({ userModel ->
+
+                            _userModelLive.value = userModel
+                        }, {
+
+                            emitAction(OnException(it))
+                        })
+                }
             }
         }
     }
@@ -182,7 +190,7 @@ class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAut
 
     fun onRefresh() {
 
-        fetchProfile()
+        fetchProfile(force = true)
 
         fetchData(-1)
     }

@@ -1,7 +1,7 @@
 package com.dxp.micircle.data.router.repository
 
 import com.dxp.micircle.Config
-import com.dxp.micircle.domain.router.model.UserModel
+import com.dxp.micircle.data.dto.model.UserModel
 import com.dxp.micircle.domain.router.repository.UsersRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Single

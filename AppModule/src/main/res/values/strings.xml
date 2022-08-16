@@ -13,6 +13,7 @@
     <string name="action_icon_left">Action icon left</string>
     <string name="clear_selected_media">Clear selected media</string>
     <string name="new_post_media_preview">New post media preview</string>
+    <string name="user_profile_image">User profile Image</string>
 
     <!-- Server Strings -->
     <string name="server_not_reachable">Server not reachable</string>

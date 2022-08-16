@@ -1,6 +1,6 @@
 package com.dxp.micircle.domain.helpers
 
-import com.dxp.micircle.domain.router.model.FeedModel
+import com.dxp.micircle.data.dto.model.FeedModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject

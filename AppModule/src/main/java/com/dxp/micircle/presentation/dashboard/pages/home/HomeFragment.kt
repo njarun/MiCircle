@@ -32,6 +32,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         when(interaction) {
 
             is OnNewPost -> {
+
                 return super.handleVMInteractions(OpenNextScreen(NewPostActivity::class.java))
             }
 

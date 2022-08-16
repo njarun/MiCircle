@@ -3,6 +3,7 @@ package com.dxp.micircle.di.module
 import android.content.Context
 import androidx.work.WorkManager
 import com.dxp.micircle.data.router.CoroutineDispatcherProvider
+import com.dxp.micircle.data.session.SessionContext
 import com.dxp.micircle.di.annotations.IoScheduler
 import com.dxp.micircle.di.annotations.UiScheduler
 import com.dxp.micircle.domain.helpers.NewPostObserver
@@ -45,4 +46,8 @@ object SessionModule {
     @Singleton
     @Provides
     fun providePostDeleteWatcher(): PostDeleteObserver = PostDeleteObserver()
+
+    @Singleton
+    @Provides
+    fun provideSessionContext(): SessionContext = SessionContext()
 }

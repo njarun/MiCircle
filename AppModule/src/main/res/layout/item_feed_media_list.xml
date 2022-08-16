@@ -12,7 +12,7 @@
 
         <variable
             name="feedModel"
-            type="com.dxp.micircle.domain.router.model.FeedModel" />
+            type="com.dxp.micircle.data.dto.model.FeedModel" />
 
         <variable
             name="position"
@@ -20,7 +20,7 @@
 
         <variable
             name="feedMediaModel"
-            type="com.dxp.micircle.domain.router.model.FeedMediaModel" />
+            type="com.dxp.micircle.data.dto.model.FeedMediaModel" />
 
         <variable
             name="listener"

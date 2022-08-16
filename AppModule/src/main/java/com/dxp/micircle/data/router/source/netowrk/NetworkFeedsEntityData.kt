@@ -2,10 +2,10 @@ package com.dxp.micircle.data.router.source.netowrk
 
 import com.dxp.micircle.Config
 import com.dxp.micircle.data.dto.mapper.PostsModelFeedMapper.toFeedModel
+import com.dxp.micircle.data.dto.model.FeedModel
+import com.dxp.micircle.data.dto.model.UserModel
 import com.dxp.micircle.data.router.source.FeedsEntityData
-import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.model.PostModel
-import com.dxp.micircle.domain.router.model.UserModel
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query

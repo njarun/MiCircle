@@ -1,7 +1,7 @@
 package com.dxp.micircle.data.dto.mapper
 
 import com.dxp.micircle.data.database.model.FeedMediaEntity
-import com.dxp.micircle.domain.router.model.FeedMediaModel
+import com.dxp.micircle.data.dto.model.FeedMediaModel
 
 object FeedMediaEntityMapper {
 

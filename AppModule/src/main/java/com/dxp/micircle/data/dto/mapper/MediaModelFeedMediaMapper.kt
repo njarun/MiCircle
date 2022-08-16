@@ -1,6 +1,6 @@
 package com.dxp.micircle.data.dto.mapper
 
-import com.dxp.micircle.domain.router.model.FeedMediaModel
+import com.dxp.micircle.data.dto.model.FeedMediaModel
 import com.dxp.micircle.domain.router.model.MediaModel
 
 object MediaModelFeedMediaMapper {

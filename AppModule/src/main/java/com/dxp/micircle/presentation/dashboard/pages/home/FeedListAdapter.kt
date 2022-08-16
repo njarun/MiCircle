@@ -1,8 +1,8 @@
 package com.dxp.micircle.presentation.dashboard.pages.home
 
 import com.dxp.micircle.R
+import com.dxp.micircle.data.dto.model.FeedModel
 import com.dxp.micircle.databinding.ItemFeedListBinding
-import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.presentation.base.adapters.recyclerview.BaseAdapter
 
 class FeedListAdapter(list: List<FeedModel>, private val userId: String?, private val itemListener: FeedListener):

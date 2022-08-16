@@ -1,7 +1,7 @@
 package com.dxp.micircle.domain.usecase
 
 import com.dxp.micircle.Config
-import com.dxp.micircle.domain.router.model.UserModel
+import com.dxp.micircle.data.dto.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Single

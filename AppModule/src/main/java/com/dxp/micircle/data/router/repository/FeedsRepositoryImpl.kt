@@ -1,8 +1,8 @@
 package com.dxp.micircle.data.router.repository
 
+import com.dxp.micircle.data.dto.model.FeedModel
 import com.dxp.micircle.data.router.factory.FeedFactory
 import com.dxp.micircle.data.router.factory.Source
-import com.dxp.micircle.domain.router.model.FeedModel
 import com.dxp.micircle.domain.router.model.PostModel
 import com.dxp.micircle.domain.router.repository.FeedsRepository
 import io.reactivex.Single
